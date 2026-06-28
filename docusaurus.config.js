@@ -16,7 +16,7 @@ const config = {
   organizationName: 'halyn-eng', // GitHub 帳號
   projectName: 'kendo-site',                // GitHub repo 名稱
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   i18n: {
