@@ -1,0 +1,99 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Here you can override the defaults.
+ */
+
+:root {
+  --ifm-color-primary: #185fa5;
+  --ifm-color-primary-dark: #155490;
+  --ifm-color-primary-darker: #134f87;
+  --ifm-color-primary-darkest: #0f4170;
+  --ifm-color-primary-light: #1b6aba;
+  --ifm-color-primary-lighter: #1c6fc2;
+  --ifm-color-primary-lightest: #2279d0;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #7ab8f5;
+  --ifm-color-primary-dark: #55a4f2;
+  --ifm-color-primary-darker: #43990f0;
+  --ifm-color-primary-darkest: #1a7cd9;
+  --ifm-color-primary-light: #9fcaf8;
+  --ifm-color-primary-lighter: #b1d4fa;
+  --ifm-color-primary-lightest: #d5e9fd;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* 劍道風格調整 */
+.navbar__title {
+  font-weight: 600;
+}
+
+/* 術語標籤 */
+.tag-blue {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #e6f1fb;
+  color: #185fa5;
+  margin-right: 6px;
+}
+
+.tag-green {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #eaf3de;
+  color: #3b6d11;
+  margin-right: 6px;
+}
+
+.tag-warn {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #faeeda;
+  color: #854f0b;
+  margin-right: 6px;
+}
+
+/* 流程區塊 */
+.flow-block {
+  background: #f5f4f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #5f5e5a;
+  font-family: monospace;
+  line-height: 2;
+  margin: 8px 0;
+}
+
+/* 錯誤/正確對比 */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.box-bad {
+  background: #fcebeb;
+  color: #a32d2d;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.box-good {
+  background: #eaf3de;
+  color: #3b6d11;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+}
