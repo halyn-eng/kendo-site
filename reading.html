@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>読み練習 — 劍道學習手冊</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand"><span class="brand-icon">⚔️</span>劍道學習手冊</a>
+    <ul class="navbar-links">
+      <li><a href="terms.html">名詞解釋</a></li>
+      <li><a href="reading.html" class="active">読み練習</a></li>
+      <li><a href="errors.html">常見錯誤</a></li>
+      <li><a href="daily.html">每日練習</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="terms.html">📖 名詞解釋</a>
+    <a href="reading.html" class="active">⚔️ 読み練習</a>
+    <a href="errors.html">⚠️ 常見錯誤</a>
+    <a href="daily.html">📅 每日練習</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>👁️ 読み練習</h1>
+  <p>看懂對方意圖，提前做出反應</p>
+</div>
+
+<div class="content">
+
+  <div class="sec-label">對方主動攻擊</div>
+  <div class="card" style="padding:1rem 1.25rem">
+    <div class="row3" style="margin-bottom:8px">
+      <div class="col-h">對方動作</div>
+      <div class="col-h">起こりのサイン</div>
+      <div class="col-h">你的応じ技</div>
+    </div>
+    <div class="row3"><div class="cell n">打面</div><div class="cell w">剣先上抬、肩上升</div><div class="cell a">返し胴 / 擦り上げ面 / 抜き胴</div></div>
+    <div class="row3"><div class="cell n">打小手</div><div class="cell w">剣先靠右手、前傾</div><div class="cell a">抜き面 / 擦り上げ面</div></div>
+    <div class="row3"><div class="cell n">打胴</div><div class="cell w">剣先右橫移、腰轉</div><div class="cell a">抜き面 / 返し面</div></div>
+  </div>
+
+  <div class="sec-label">對方靜止或試探</div>
+  <div class="card" style="padding:1rem 1.25rem">
+    <div class="row2" style="margin-bottom:8px">
+      <div class="col-h">對方狀態</div>
+      <div class="col-h">你的仕掛け技</div>
+    </div>
+    <div class="row2"><div class="cell n">剣先下沉（鬆懈）</div><div class="cell g">出ばな面</div></div>
+    <div class="row2"><div class="cell n">後退中</div><div class="cell g">追い込み面</div></div>
+    <div class="row2"><div class="cell n">構えが高い（竹刀抬高）</div><div class="cell g">小手</div></div>
+    <div class="row2"><div class="cell n">構えが低い（竹刀壓低）</div><div class="cell g">面</div></div>
+    <div class="row2"><div class="cell n">足が止まっている</div><div class="cell g">連続技（小手面）</div></div>
+  </div>
+
+  <div class="sec-label">鍔迫り合い後</div>
+  <div class="card" style="padding:1rem 1.25rem">
+    <div class="row2" style="margin-bottom:8px">
+      <div class="col-h">狀況</div>
+      <div class="col-h">你的選擇</div>
+    </div>
+    <div class="row2"><div class="cell n">雙方糾纏</div><div class="cell a">引き面 / 引き小手 / 引き胴</div></div>
+    <div class="row2"><div class="cell n">對方推你</div><div class="cell a">利用反力 → 引き技</div></div>
+    <div class="row2"><div class="cell n">對方拉你</div><div class="cell a">跟著進 → 面 or 小手</div></div>
+    <div class="row2"><div class="cell n">對方靜止</div><div class="cell a">引き面</div></div>
+  </div>
+
+  <div class="sec-label">間合い（距離）對照</div>
+  <div class="card" style="padding:1rem 1.25rem">
+    <div class="row3" style="margin-bottom:8px">
+      <div class="col-h">距離</div>
+      <div class="col-h">狀態</div>
+      <div class="col-h">適合的技</div>
+    </div>
+    <div class="row3"><div class="cell n">遠間（遠）</div><div class="cell n">未進入攻擊範圍</div><div class="cell a">等起こり → 出ばな技</div></div>
+    <div class="row3"><div class="cell n">一足一刀（剛好）</div><div class="cell n">標準攻擊距離</div><div class="cell a">面・小手・胴皆可</div></div>
+    <div class="row3"><div class="cell n">近間（近）</div><div class="cell n">太近打不開</div><div class="cell a">鍔迫り合い → 引き技</div></div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,#1c2b4a,#2c4a7a);border:none;color:white;margin-top:1.5rem">
+    <div style="font-size:12px;opacity:0.7;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em">🎯 初學者優先練這3個</div>
+    <div class="priority-item" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:14px;color:white">
+      <div class="priority-num">1</div>對方打面 → 返し胴
+    </div>
+    <div class="priority-item" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:14px;color:white">
+      <div class="priority-num">2</div>對方打小手 → 抜き面
+    </div>
+    <div class="priority-item" style="display:flex;align-items:center;gap:10px;font-size:14px;color:white">
+      <div class="priority-num">3</div>鍔迫り合い後 → 引き面
+    </div>
+  </div>
+
+</div>
+
+<footer>道館規定：面・小手・胴 only（無突き）</footer>
+<script>function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}</script>
+</body>
+</html>

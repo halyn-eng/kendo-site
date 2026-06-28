@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>名詞解釋 — 劍道學習手冊</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand"><span class="brand-icon">⚔️</span>劍道學習手冊</a>
+    <ul class="navbar-links">
+      <li><a href="terms.html" class="active">名詞解釋</a></li>
+      <li><a href="reading.html">読み練習</a></li>
+      <li><a href="errors.html">常見錯誤</a></li>
+      <li><a href="daily.html">每日練習</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="terms.html" class="active">📖 名詞解釋</a>
+    <a href="reading.html">⚔️ 読み練習</a>
+    <a href="errors.html">⚠️ 常見錯誤</a>
+    <a href="daily.html">📅 每日練習</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>📖 名詞解釋</h1>
+  <p>基本姿勢・腳步・打擊部位・技の種類・距離與接觸</p>
+</div>
+
+<div class="content">
+
+  <div class="sec-label">基本姿勢與動作</div>
+
+  <div class="card">
+    <span class="tag blue">姿勢</span>
+    <div class="term-name">中段の構え（ちゅうだんのかまえ）</div>
+    <div class="term-body">標準備戰姿勢。剣先對準對方喉嚨到左眼之間。</div>
+    <div class="divider"></div>
+    <div class="compare" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="box bad"><div class="box-label">構えが高い</div>剣先偏上（對準額頭以上）→ 小手露出</div>
+      <div class="box good"><div class="box-label">正常</div>剣先對準喉嚨到左眼</div>
+      <div class="box bad"><div class="box-label">構えが低い</div>剣先偏下（對準胸口）→ 面露出</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="tag blue">腳步</span>
+    <div class="term-name">踏み込み（ふみこみ）</div>
+    <div class="term-body">打擊瞬間右腳用力踩地，產生爆發力。不是「跳起來踩」，是左腳蹬地推出去，右腳水平滑出落地。</div>
+    <div class="flow">気（喊聲）+ 劍（竹刀到）+ 体（右腳踩地）= 同一瞬間</div>
+    <div class="term-body">審判判定一本時，踏み込みの音也是依據之一。</div>
+  </div>
+
+  <div class="card">
+    <span class="tag blue">腳步</span>
+    <div class="term-name">足さばき（あしさばき）</div>
+    <div class="term-body">劍道的腳步移動。前進後退、左右、斜め，意識放在<b>左腳蹬地</b>，不是右腳主動移動。</div>
+  </div>
+
+  <div class="card">
+    <span class="tag blue">基本練習</span>
+    <div class="term-name">素振り（すぶり）</div>
+    <div class="term-body">徒手揮竹刀練習。分正面素振り、斜め素振り、仕掛け素振り等。自主練習的核心項目。</div>
+  </div>
+
+  <div class="sec-label">打擊部位</div>
+
+  <div class="card">
+    <span class="tag green">打突部位</span>
+    <div class="term-name">面・小手・胴（めん・こて・どう）</div>
+    <div class="term-body">
+      道館規定不打突き（喉嚨），所以有效攻擊只有這三個：<br><br>
+      <b>面</b>（メン）— 頭頂 &nbsp;｜&nbsp; <b>小手</b>（コテ）— 右手腕 &nbsp;｜&nbsp; <b>胴</b>（ドウ）— 右脇腹
+    </div>
+  </div>
+
+  <div class="sec-label">技の種類</div>
+
+  <div class="card">
+    <span class="tag warn">仕掛け技</span>
+    <div class="term-name">仕掛け技（しかけわざ）</div>
+    <div class="term-body">你主動發動的攻擊技。包含出ばな技、連続技、追い込み技等。</div>
+  </div>
+
+  <div class="card">
+    <span class="tag warn">応じ技</span>
+    <div class="term-name">応じ技（おうじわざ）</div>
+    <div class="term-body">對方攻擊後反擊的技。等對方動了才發動，読み能力是關鍵。</div>
+    <div class="divider"></div>
+    <div class="term-body" style="line-height:2.2">
+      <b>返し技</b>（かえしわざ）— 接住對方竹刀後反打<br>
+      <b>抜き技</b>（ぬきわざ）— 閃開對方攻擊後打<br>
+      <b>擦り上げ技</b>（すりあげわざ）— 撥開對方竹刀後打<br>
+      <b>打ち落とし技</b>（うちおとしわざ）— 把對方竹刀打落後打
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="tag warn">応じ技詳解</span>
+    <div class="term-name">返し胴（かえしどう）★ 初學首選</div>
+    <div class="term-body">對方打面時，接住竹刀，往右前方斜步，順勢打胴。最自然、最好練的応じ技。</div>
+    <div class="flow">對方打面 → 右前斜步 → 接住 → 打胴</div>
+  </div>
+
+  <div class="card">
+    <span class="tag warn">応じ技詳解</span>
+    <div class="term-name">擦り上げ面（すりあげめん）</div>
+    <div class="term-body">對方竹刀打下來時，用自己竹刀從下往上「擦」過去撥開，順勢打面。不是硬擋，是滑開——像雨傘側面把水撥走。時機要抓得很準，初學建議先練返し胴。</div>
+    <div class="flow">對方打來 → 竹刀由下往上擦 → 撥開 → 打面</div>
+  </div>
+
+  <div class="card">
+    <span class="tag warn">応じ技詳解</span>
+    <div class="term-name">抜き面 vs 返し面</div>
+    <div class="term-body">兩個都是對方打來後打面，但方式不同：</div>
+    <div class="compare" style="margin-top:10px">
+      <div class="box good"><div class="box-label">抜き面</div>閃開（不接觸）→ 對方落空 → 打面。適合對方打胴時。</div>
+      <div class="box good"><div class="box-label">返し面</div>接住（有接觸）→ 撥開 → 打面。對方力道大時借力。</div>
+    </div>
+  </div>
+
+  <div class="sec-label">距離與接觸</div>
+
+  <div class="card">
+    <span class="tag blue">距離</span>
+    <div class="term-name">間合い（まあい）</div>
+    <div class="term-body">
+      <b>遠間</b> — 還沒進攻擊範圍，等起こり<br>
+      <b>一足一刀</b> — 標準攻擊距離，所有技都可發動<br>
+      <b>近間</b> — 太近，進入鍔迫り合い狀態
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="tag blue">接觸</span>
+    <div class="term-name">鍔迫り合い（つばぜりあい）</div>
+    <div class="term-body">雙方靠太近、竹刀交叉頂在一起的狀態。頂住要馬上決定打或退，太久審判喊「分かれ」強制重來。</div>
+    <div class="flow">鍔迫り合い → 引き面 / 引き小手 / 引き胴</div>
+  </div>
+
+  <div class="card">
+    <span class="tag blue">引き技</span>
+    <div class="term-name">引き面（ひきめん）＝ 退擊面</div>
+    <div class="term-body">鍔迫り合い後退後打面。</div>
+    <div class="flow">打面 → 鍔迫り合い → 左手舉起 → 踏み込み＋打面 → 後退2～3步 → 殘心</div>
+    <div class="term-body" style="margin-top:8px;color:#a32d2d;font-size:13px">⚠ 打的瞬間是踏み込み（向前踩），打完才後退，不是退的同時打。</div>
+  </div>
+
+  <div class="sec-label">稽古種類</div>
+
+  <div class="card">
+    <span class="tag warn">稽古</span>
+    <div class="term-name">掛かり稽古（かかりげいこ）</div>
+    <div class="term-body">你一直衝、一直打，對方（元立ち）只接招不還手。不是練「打準」，是練氣力不斷、踏み込みの爆發力、體力與精神極限、殘心習慣化。30秒～2分鐘，累到腿軟正常。</div>
+  </div>
+
+  <div class="card">
+    <span class="tag warn">読み</span>
+    <div class="term-name">起こり（おこり）</div>
+    <div class="term-body">動作的起點、預兆。読み練習的關鍵——不是看竹刀，是看肩膀、腰、剣先的起こり。</div>
+    <div class="flow">看肩膀 → 要打之前肩會先動<br>看腰 → 踏み込み前腰會下沉<br>看剣先 → 上抬 = 準備打面</div>
+  </div>
+
+</div>
+
+<footer>道館規定：面・小手・胴 only（無突き）</footer>
+<script>function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}</script>
+</body>
+</html>

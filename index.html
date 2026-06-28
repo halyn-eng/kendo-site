@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>劍道學習手冊</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand">
+      <span class="brand-icon">⚔️</span>
+      劍道學習手冊
+    </a>
+    <ul class="navbar-links">
+      <li><a href="terms.html">名詞解釋</a></li>
+      <li><a href="reading.html">読み練習</a></li>
+      <li><a href="errors.html">常見錯誤</a></li>
+      <li><a href="daily.html">每日練習</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="選單">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="terms.html">📖 名詞解釋</a>
+    <a href="reading.html">⚔️ 読み練習</a>
+    <a href="errors.html">⚠️ 常見錯誤</a>
+    <a href="daily.html">📅 每日練習</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>⚔️ 劍道學習手冊</h1>
+  <p>道館規定：面・小手・胴 only（無突き）<br>從基礎術語到每日練習，一站式學習指南</p>
+
+  <div class="hero-cards">
+    <a href="terms.html" class="hero-card">
+      <div class="card-icon">📖</div>
+      <div class="card-title">名詞解釋</div>
+      <div class="card-desc">姿勢・腳步・技の種類</div>
+    </a>
+    <a href="reading.html" class="hero-card">
+      <div class="card-icon">👁️</div>
+      <div class="card-title">読み練習</div>
+      <div class="card-desc">對應策略・間合い表</div>
+    </a>
+    <a href="errors.html" class="hero-card">
+      <div class="card-icon">⚠️</div>
+      <div class="card-title">常見錯誤</div>
+      <div class="card-desc">踏み込み・読み・構え</div>
+    </a>
+    <a href="daily.html" class="hero-card">
+      <div class="card-icon">📅</div>
+      <div class="card-title">每日練習</div>
+      <div class="card-desc">15分鐘結構・週輪替表</div>
+    </a>
+  </div>
+
+  <div class="priority-box">
+    <h3>🎯 初學者優先練這3個</h3>
+    <div class="priority-item"><div class="priority-num">1</div>對方打面 → 返し胴</div>
+    <div class="priority-item"><div class="priority-num">2</div>對方打小手 → 抜き面</div>
+    <div class="priority-item"><div class="priority-num">3</div>鍔迫り合い後 → 引き面</div>
+  </div>
+</section>
+
+<footer>
+  道館規定：面・小手・胴 only（無突き）
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+</script>
+</body>
+</html>
