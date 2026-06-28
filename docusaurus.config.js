@@ -20,19 +20,12 @@ const config = {
     locales: ['en'],
   },
 
-  markdown: {
-    hooks: {
-      onBrokenMarkdownLinks: 'warn',
-    },
-  },
-
   presets: [
     [
       'classic',
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          routeBasePath: '/',
         },
         blog: false,
         theme: {
@@ -69,7 +62,6 @@ const config = {
     },
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: false,
     },
   }),
 };
