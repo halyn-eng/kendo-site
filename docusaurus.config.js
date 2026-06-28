@@ -20,8 +20,8 @@ const config = {
   onBrokenMarkdownLinks: 'warn',
 
   i18n: {
-    defaultLocale: 'zh-Hant',
-    locales: ['zh-Hant'],
+    defaultLocale: 'en',
+    locales: ['en'],
   },
 
   presets: [
