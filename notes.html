@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>練習心得 — 劍道學習手冊</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand"><span class="brand-icon">⚔️</span>劍道學習手冊</a>
+    <ul class="navbar-links">
+      <li><a href="terms.html">📖 名詞解釋</a></li>
+      <li><a href="reading.html">🎯 読み練習</a></li>
+      <li><a href="errors.html">⚠️ 常見錯誤</a></li>
+      <li><a href="daily.html">📅 每日練習</a></li>
+      <li><a href="notes.html" class="active">📝 練習心得</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="terms.html">📖 名詞解釋</a>
+    <a href="reading.html">🎯 読み練習</a>
+    <a href="errors.html">⚠️ 常見錯誤</a>
+    <a href="daily.html">📅 每日練習</a>
+    <a href="notes.html" class="active">📝 練習心得</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>📝 練習心得</h1>
+  <p>記錄每次稽古的收穫・問題・進步</p>
+</div>
+
+<div class="content">
+
+  <!-- 心得從這裡開始，最新的在最上面 -->
+
+  <div style="text-align:center;color:#aaa;padding:3rem;font-size:14px">
+    還沒有心得記錄。
+  </div>
+
+</div>
+
+<footer>道館規定：面・小手・胴 only（無突き）</footer>
+<script>function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}</script>
+</body>
+</html>

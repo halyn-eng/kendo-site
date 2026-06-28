@@ -282,6 +282,32 @@ body {
 .time-grid { display: grid; grid-template-columns: 60px 1fr 1fr; gap: 6px; }
 .week-grid { display: grid; grid-template-columns: 40px 1fr; gap: 6px; }
 
+/* ── JAPANESE TOOLTIP ── */
+.jp {
+  border-bottom: 1px dashed var(--blue);
+  cursor: help;
+  position: relative;
+  display: inline-block;
+}
+.jp::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 200;
+}
+.jp:hover::after { opacity: 1; }
+
 /* ── FOOTER ── */
 footer {
   background: var(--navy);
@@ -289,6 +315,71 @@ footer {
   text-align: center;
   padding: 1.5rem;
   font-size: 13px;
+}
+
+/* ── NOTES PAGE ── */
+.notes-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+.notes-form input[type="date"],
+.notes-form textarea,
+.notes-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--gray-border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--white);
+}
+.notes-form textarea { min-height: 100px; resize: vertical; }
+.btn-save {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background 0.15s;
+}
+.btn-save:hover { background: var(--blue); }
+.note-entry {
+  border-left: 3px solid var(--blue);
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  background: var(--gray-bg);
+  border-radius: 0 8px 8px 0;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.note-entry .note-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.note-entry .note-text { white-space: pre-wrap; }
+.btn-del {
+  background: none;
+  border: none;
+  color: #bbb;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+}
+.btn-del:hover { color: var(--accent); }
+.mood-tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--blue-soft);
+  color: var(--blue);
+  margin-left: 6px;
 }
 
 /* ── RWD ── */
