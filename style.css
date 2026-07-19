@@ -157,11 +157,19 @@ body {
   font-family: var(--serif);
   font-size: clamp(2.1rem, 5.5vw, 3.6rem);
   font-weight: 500;
-  line-height: 1.35;
+  line-height: 1.55;
   letter-spacing: 0.01em;
   margin-bottom: 1.75rem;
   max-width: 16em;
 }
+.hl {
+  background-color: #c3dab5;
+  padding: 0.1em 0.28em;
+  margin-inline: -0.28em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.hl.hl-sm { padding: 0.15em 0.35em; margin-inline: -0.35em; color: var(--ink); }
 .lp-hero .lead {
   font-size: 15px;
   color: var(--ink-soft);
