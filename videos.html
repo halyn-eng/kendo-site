@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>練習心得 — 劍道學習手冊</title>
+<title>影片筆記 — 劍道學習手冊</title>
 <link rel="stylesheet" href="style.css?v=20260719h">
 <style>
 .auth-bar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:1rem}
@@ -13,6 +13,10 @@
 .note-btn{font-size:11.5px;padding:3px 11px;border-radius:2px;border:1px solid var(--line);background:var(--paper-2);color:var(--ink-soft);font-family:inherit;cursor:pointer;transition:background .18s,color .18s,border-color .18s}
 .note-btn:hover{background:var(--line-soft);color:var(--ink);border-color:var(--ink-faint)}
 .note-btn.delete:hover{color:var(--accent);border-color:var(--accent)}
+.video-title{font-family:var(--serif);font-size:15.5px;font-weight:500;margin-bottom:2px}
+.video-title a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.video-title a:hover{border-color:var(--ink-faint)}
+.video-src{font-size:11.5px;color:var(--ink-faint);margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -25,8 +29,8 @@
       <li><a href="reading.html">読み練習</a></li>
       <li><a href="errors.html">常見錯誤</a></li>
       <li><a href="daily.html">每日練習</a></li>
-      <li><a href="notes.html" class="active">練習心得</a></li>
-      <li><a href="videos.html">影片筆記</a></li>
+      <li><a href="notes.html">練習心得</a></li>
+      <li><a href="videos.html" class="active">影片筆記</a></li>
     </ul>
     <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   </div>
@@ -35,14 +39,14 @@
     <a href="reading.html">読み練習</a>
     <a href="errors.html">常見錯誤</a>
     <a href="daily.html">每日練習</a>
-    <a href="notes.html" class="active">練習心得</a>
-    <a href="videos.html">影片筆記</a>
+    <a href="notes.html">練習心得</a>
+    <a href="videos.html" class="active">影片筆記</a>
   </div>
 </nav>
 
 <div class="page-header">
-  <h1>練習心得</h1>
-  <p>記錄每次稽古的收穫・問題・進步</p>
+  <h1>影片筆記</h1>
+  <p>看日本劍道 YouTube 影片，消化後寫成自己的中文重點筆記</p>
 </div>
 
 <div class="content">
@@ -60,10 +64,12 @@
 
   <form id="add-note-form" class="notes-form" style="display:none">
     <input type="date" id="note-date" required>
-    <textarea id="note-text-input" placeholder="寫下今天的心得..." required></textarea>
+    <input type="text" id="note-title" placeholder="影片標題（自己下的中文標題）" required>
+    <input type="url" id="note-url" placeholder="YouTube 連結（https://youtube.com/...）" required>
+    <textarea id="note-text-input" placeholder="用自己的話寫重點筆記，不用逐字翻譯" required></textarea>
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button type="button" id="cancel-edit-btn" class="note-btn" style="display:none">取消編輯</button>
-      <button id="note-submit" class="btn-save" type="submit">發布心得</button>
+      <button id="note-submit" class="btn-save" type="submit">發布筆記</button>
     </div>
   </form>
 
@@ -94,7 +100,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 const ADMIN_UID = "aRf8E0FGuZYHAJTFtIA94HJPArF2";
-const notesRef = db.ref('notes');
+const notesRef = db.ref('videos');
 
 const loginBtn = document.getElementById('login-btn');
 const logoutBtn = document.getElementById('logout-btn');
@@ -119,15 +125,17 @@ function toISODate(display){
 function resetForm(){
   addForm.reset();
   editingKey = null;
-  noteSubmitBtn.textContent = '發布心得';
+  noteSubmitBtn.textContent = '發布筆記';
   cancelEditBtn.style.display = 'none';
 }
 
 function startEdit(e){
   editingKey = e.key;
   document.getElementById('note-date').value = toISODate(e.date);
+  document.getElementById('note-title').value = e.title || '';
+  document.getElementById('note-url').value = e.url || '';
   document.getElementById('note-text-input').value = (e.text||'').replace(/<br\s*\/?>/gi, '\n');
-  noteSubmitBtn.textContent = '更新心得';
+  noteSubmitBtn.textContent = '更新筆記';
   cancelEditBtn.style.display = 'inline-block';
   addForm.scrollIntoView({behavior:'smooth'});
 }
@@ -142,7 +150,7 @@ function renderNotes(snapshot){
 
   notesList.innerHTML = '';
   if (entries.length === 0){
-    notesList.innerHTML = '<div style="text-align:center;color:var(--ink-faint);padding:3.5rem;font-size:13.5px">還沒有心得記錄。</div>';
+    notesList.innerHTML = '<div style="text-align:center;color:var(--ink-faint);padding:3.5rem;font-size:13.5px">還沒有影片筆記。</div>';
     return;
   }
   entries.forEach(e => {
@@ -168,12 +176,32 @@ function renderNotes(snapshot){
       const delBtn = document.createElement('button');
       delBtn.className = 'note-btn delete';
       delBtn.textContent = '刪除';
-      delBtn.onclick = () => { if (confirm('確定刪除這篇心得？')) notesRef.child(e.key).remove(); };
+      delBtn.onclick = () => { if (confirm('確定刪除這篇筆記？')) notesRef.child(e.key).remove(); };
       actions.appendChild(delBtn);
 
       meta.appendChild(actions);
     }
     entry.appendChild(meta);
+
+    if (e.title){
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'video-title';
+      if (e.url){
+        const a = document.createElement('a');
+        a.href = e.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+        a.textContent = e.title;
+        titleDiv.appendChild(a);
+      } else {
+        titleDiv.textContent = e.title;
+      }
+      entry.appendChild(titleDiv);
+    }
+    if (e.url){
+      const srcDiv = document.createElement('div');
+      srcDiv.className = 'video-src';
+      srcDiv.textContent = '▶ 原片：' + e.url;
+      entry.appendChild(srcDiv);
+    }
 
     const textDiv = document.createElement('div');
     textDiv.className = 'note-text';
@@ -211,21 +239,25 @@ auth.onAuthStateChanged(user => {
 addForm.addEventListener('submit', (ev) => {
   ev.preventDefault();
   const dateVal = document.getElementById('note-date').value;
+  const titleVal = document.getElementById('note-title').value.trim();
+  const urlVal = document.getElementById('note-url').value.trim();
   const textVal = document.getElementById('note-text-input').value.trim();
-  if (!dateVal || !textVal) return;
+  if (!dateVal || !titleVal || !textVal) return;
+
+  const payload = {
+    date: formatDate(dateVal),
+    title: titleVal,
+    url: urlVal,
+    text: textVal.replace(/\n/g, '<br>')
+  };
 
   if (editingKey){
-    notesRef.child(editingKey).update({
-      date: formatDate(dateVal),
-      text: textVal.replace(/\n/g, '<br>')
-    }).then(resetForm)
+    notesRef.child(editingKey).update(payload)
+      .then(resetForm)
       .catch(err => alert('更新失敗：' + err.message));
   } else {
-    notesRef.push({
-      date: formatDate(dateVal),
-      text: textVal.replace(/\n/g, '<br>'),
-      timestamp: Date.now()
-    }).then(resetForm)
+    notesRef.push({ ...payload, timestamp: Date.now() })
+      .then(resetForm)
       .catch(err => alert('發布失敗：' + err.message));
   }
 });
