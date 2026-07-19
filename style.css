@@ -166,6 +166,42 @@ body {
 }
 .lp-link:hover { color: var(--ink); border-color: var(--ink); }
 
+/* ── IMAGES ── */
+.lp-hero-media {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 2rem 1rem;
+}
+.lp-hero-media .media {
+  aspect-ratio: 21 / 9;
+  border-radius: 4px;
+  background-color: var(--gray-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--line);
+}
+.lp-grid .c-thumb {
+  aspect-ratio: 3 / 2;
+  margin: -1.75rem -1.5rem 1.25rem;
+  background-color: var(--gray-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid var(--line);
+}
+.fig {
+  margin: 14px 0 4px;
+  aspect-ratio: 4 / 3;
+  background-color: var(--gray-bg);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+}
+.fig-cap { font-size: 11.5px; color: var(--ink-faint); letter-spacing: 0.04em; margin-bottom: 10px; }
+
 /* ── LANDING: SECTION SHELL ── */
 .lp-section { max-width: 1080px; margin: 0 auto; padding: 5rem 2rem; }
 .lp-section + .lp-section { padding-top: 0; }
@@ -273,6 +309,21 @@ body {
 }
 .sec-label:first-child { margin-top: 0; }
 
+/* Section heading (content pages) */
+.sec-head { margin: 4rem 0 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); scroll-margin-top: 90px; }
+.sec-head:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+.sec-head .s-num { font-family: var(--serif); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.14em; }
+.sec-head h2 { font-family: var(--serif); font-size: 1.25rem; font-weight: 500; margin-top: 0.4rem; }
+.sec-head p { font-size: 12.5px; color: var(--ink-faint); font-weight: 300; margin-top: 0.35rem; }
+
+/* Page table of contents */
+.toc { border: 1px solid var(--line); border-radius: 4px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; background: var(--paper-2); }
+.toc .toc-label { font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.9rem; }
+.toc ol { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem 1.5rem; }
+.toc a { display: flex; gap: 0.7rem; align-items: baseline; text-decoration: none; color: var(--ink-soft); font-size: 13.5px; transition: color 0.18s; }
+.toc a:hover { color: var(--ink); }
+.toc a .t-n { font-family: var(--serif); font-size: 11px; color: var(--ink-faint); }
+
 .card {
   background: var(--paper-2);
   border: 1px solid var(--line);
@@ -330,7 +381,8 @@ body {
 .week-grid { display: grid; grid-template-columns: 40px 1fr; gap: 6px; }
 
 /* ── JAPANESE TOOLTIP ── */
-.jp { border-bottom: 1px dotted var(--ink-faint); cursor: help; position: relative; display: inline-block; }
+.jp { border-bottom: 1px dotted #cfc9bd; cursor: help; position: relative; display: inline-block; }
+.jp:hover { border-bottom-color: var(--ink-faint); }
 .jp::after {
   content: attr(data-tip);
   position: absolute;
