@@ -132,17 +132,20 @@ body {
 .lp-hero::after {
   content: '';
   position: absolute;
-  right: 1rem;
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 48%;
+  width: 78%;
   aspect-ratio: 3 / 2;
   background: url('images/hero.jpg') center/contain no-repeat;
   z-index: 0;
   pointer-events: none;
+  -webkit-mask-image: linear-gradient(to left, #000 42%, rgba(0,0,0,0.25) 72%, transparent 94%);
+  mask-image: linear-gradient(to left, #000 42%, rgba(0,0,0,0.25) 72%, transparent 94%);
 }
 .lp-hero > * { position: relative; z-index: 1; }
-.lp-hero h1, .lp-hero .lead, .lp-hero .lp-kicker { max-width: 52%; }
+.lp-hero h1 { max-width: 15em; }
+.lp-hero .lead { max-width: 30em; }
 .lp-kicker {
   font-size: 11px;
   letter-spacing: 0.22em;
@@ -509,8 +512,10 @@ footer {
     width: 100%;
     margin-top: 2.5rem;
     display: block;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
-  .lp-hero h1, .lp-hero .lead, .lp-hero .lp-kicker { max-width: none; }
+  .lp-hero h1, .lp-hero .lead { max-width: none; }
   .lp-section { padding: 3.5rem 1.25rem; }
   .lp-rule { padding: 0 1.25rem; }
   .lp-statement { padding: 3rem 1.25rem; }
