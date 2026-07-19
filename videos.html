@@ -4,19 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>影片筆記 — 劍道學習手冊</title>
-<link rel="stylesheet" href="style.css?v=20260719h">
+<link rel="stylesheet" href="style.css?v=20260719j">
 <style>
 .auth-bar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:1rem}
 .auth-bar button{padding:6px 16px;font-size:13px}
 #login-form{max-width:320px;margin-left:auto;margin-bottom:1.5rem}
-.note-actions{display:flex;gap:6px}
 .note-btn{font-size:11.5px;padding:3px 11px;border-radius:2px;border:1px solid var(--line);background:var(--paper-2);color:var(--ink-soft);font-family:inherit;cursor:pointer;transition:background .18s,color .18s,border-color .18s}
 .note-btn:hover{background:var(--line-soft);color:var(--ink);border-color:var(--ink-faint)}
 .note-btn.delete:hover{color:var(--accent);border-color:var(--accent)}
-.video-title{font-family:var(--serif);font-size:15.5px;font-weight:500;margin-bottom:2px}
-.video-title a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
-.video-title a:hover{border-color:var(--ink-faint)}
-.video-src{font-size:11.5px;color:var(--ink-faint);margin-bottom:8px}
+.field-hint{font-size:11.5px;color:var(--ink-faint);margin:-4px 0 2px}
 </style>
 </head>
 <body>
@@ -46,7 +42,7 @@
 
 <div class="page-header">
   <h1>影片筆記</h1>
-  <p>看日本劍道 YouTube 影片，消化後寫成自己的中文重點筆記</p>
+  <p>看日本劍道 YouTube 影片，消化後寫成自己的中文重點</p>
 </div>
 
 <div class="content">
@@ -62,19 +58,30 @@
     <button id="login-submit" class="btn-save" type="submit">送出登入</button>
   </form>
 
-  <form id="add-note-form" class="notes-form" style="display:none">
-    <input type="date" id="note-date" required>
-    <input type="text" id="note-title" placeholder="影片標題（自己下的中文標題）" required>
-    <input type="url" id="note-url" placeholder="YouTube 連結（https://youtube.com/...）" required>
-    <textarea id="note-text-input" placeholder="用自己的話寫重點筆記，不用逐字翻譯" required></textarea>
+  <form id="add-form" class="notes-form" style="display:none">
+    <input type="date" id="f-date" required>
+    <input type="text" id="f-title" placeholder="影片標題（自己下的中文標題）" required>
+    <input type="url" id="f-url" placeholder="YouTube 連結（https://youtu.be/...）">
+    <input type="text" id="f-tags" placeholder="標籤，例：返し胴 踏み込み 中段">
+    <div class="field-hint">標籤用空白或逗號分隔，不用打 #</div>
+    <textarea id="f-text" placeholder="用自己的話寫重點筆記，不用逐字翻譯&#10;&#10;寫 3:20 這種時間，發布後會自動變成可以點的連結，直接跳到影片那一秒" required></textarea>
     <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button type="button" id="cancel-edit-btn" class="note-btn" style="display:none">取消編輯</button>
-      <button id="note-submit" class="btn-save" type="submit">發布筆記</button>
+      <button type="button" id="cancel-btn" class="note-btn" style="display:none">取消編輯</button>
+      <button id="submit-btn" class="btn-save" type="submit">發布筆記</button>
     </div>
   </form>
 
-  <div id="notes-list">
-    <div style="text-align:center;color:var(--ink-faint);padding:3.5rem;font-size:13.5px">載入中...</div>
+  <div class="filter-bar">
+    <div class="filter-row">
+      <input type="text" id="search" class="search-input" placeholder="搜尋標題或筆記內容…">
+      <span class="filter-count" id="count"></span>
+      <a href="tags.html" class="tag-chip" style="text-decoration:none">標籤總覽 →</a>
+    </div>
+    <div class="tag-chips" id="tag-chips"></div>
+  </div>
+
+  <div class="video-grid" id="list">
+    <div class="empty-state" style="grid-column:1/-1">載入中…</div>
   </div>
 
 </div>
@@ -84,181 +91,264 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="app.js?v=20260719j"></script>
 <script>
-function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
-
-const firebaseConfig = {
-  apiKey: "AIzaSyABbUlUE4GXd-oOS5wGvE44QMTf5jHOoww",
-  authDomain: "kendo-blog.firebaseapp.com",
-  databaseURL: "https://kendo-blog-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "kendo-blog",
-  storageBucket: "kendo-blog.firebasestorage.app",
-  messagingSenderId: "131957671333",
-  appId: "1:131957671333:web:5477aaeafdc9765433544c"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
-const ADMIN_UID = "aRf8E0FGuZYHAJTFtIA94HJPArF2";
-const notesRef = db.ref('videos');
+const fb = KENDO.init();
+const auth = fb.auth;
+const db = fb.db;
+const ADMIN_UID = KENDO.ADMIN_UID;
+const ref = db.ref('videos');
 
 const loginBtn = document.getElementById('login-btn');
 const logoutBtn = document.getElementById('logout-btn');
 const loginForm = document.getElementById('login-form');
-const addForm = document.getElementById('add-note-form');
-const cancelEditBtn = document.getElementById('cancel-edit-btn');
-const noteSubmitBtn = document.getElementById('note-submit');
-const notesList = document.getElementById('notes-list');
+const addForm = document.getElementById('add-form');
+const cancelBtn = document.getElementById('cancel-btn');
+const submitBtn = document.getElementById('submit-btn');
+const listEl = document.getElementById('list');
+const chipsEl = document.getElementById('tag-chips');
+const searchEl = document.getElementById('search');
+const countEl = document.getElementById('count');
+
+let entries = [];
 let editingKey = null;
+let activeTag = null;
+let query = '';
 
-function formatDate(iso){
-  const parts = iso.split('-');
-  return parts[0] + '/' + parseInt(parts[1],10) + '/' + parseInt(parts[2],10);
-}
+/* ---------- helpers（共用邏輯在 app.js） ---------- */
+var ytId = KENDO.ytId, formatDate = KENDO.formatDate,
+    toISODate = KENDO.toISODate, parseTags = KENDO.parseTags;
 
-function toISODate(display){
-  const parts = (display||'').split('/');
-  if (parts.length !== 3) return '';
-  return parts[0] + '-' + String(parts[1]).padStart(2,'0') + '-' + String(parts[2]).padStart(2,'0');
-}
-
+/* ---------- form ---------- */
 function resetForm(){
   addForm.reset();
   editingKey = null;
-  noteSubmitBtn.textContent = '發布筆記';
-  cancelEditBtn.style.display = 'none';
+  submitBtn.textContent = '發布筆記';
+  cancelBtn.style.display = 'none';
 }
-
 function startEdit(e){
   editingKey = e.key;
-  document.getElementById('note-date').value = toISODate(e.date);
-  document.getElementById('note-title').value = e.title || '';
-  document.getElementById('note-url').value = e.url || '';
-  document.getElementById('note-text-input').value = (e.text||'').replace(/<br\s*\/?>/gi, '\n');
-  noteSubmitBtn.textContent = '更新筆記';
-  cancelEditBtn.style.display = 'inline-block';
+  document.getElementById('f-date').value = toISODate(e.date);
+  document.getElementById('f-title').value = e.title || '';
+  document.getElementById('f-url').value = e.url || '';
+  document.getElementById('f-tags').value = (e.tags || []).join(' ');
+  document.getElementById('f-text').value = e.text || '';
+  submitBtn.textContent = '更新筆記';
+  cancelBtn.style.display = 'inline-block';
   addForm.scrollIntoView({behavior:'smooth'});
 }
+cancelBtn.onclick = function(){ resetForm(); };
 
-cancelEditBtn.onclick = () => resetForm();
+/* ---------- render ---------- */
+function renderChips(){
+  var counts = {};
+  entries.forEach(function(e){
+    (e.tags||[]).forEach(function(t){ counts[t] = (counts[t]||0) + 1; });
+  });
+  var tags = Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a] || a.localeCompare(b); });
+  chipsEl.innerHTML = '';
+  if (!tags.length) return;
 
-function renderNotes(snapshot){
-  const isAdmin = auth.currentUser && auth.currentUser.uid === ADMIN_UID;
-  const entries = [];
-  snapshot.forEach(child => { entries.push({ key: child.key, ...child.val() }); });
-  entries.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+  var all = document.createElement('button');
+  all.className = 'tag-chip' + (activeTag === null ? ' active' : '');
+  all.textContent = '全部';
+  all.onclick = function(){ activeTag = null; render(); };
+  chipsEl.appendChild(all);
 
-  notesList.innerHTML = '';
-  if (entries.length === 0){
-    notesList.innerHTML = '<div style="text-align:center;color:var(--ink-faint);padding:3.5rem;font-size:13.5px">還沒有影片筆記。</div>';
-    return;
-  }
-  entries.forEach(e => {
-    const entry = document.createElement('div');
-    entry.className = 'note-entry';
-
-    const meta = document.createElement('div');
-    meta.className = 'note-meta';
-    const dateSpan = document.createElement('span');
-    dateSpan.textContent = e.date || '';
-    meta.appendChild(dateSpan);
-
-    if (isAdmin){
-      const actions = document.createElement('div');
-      actions.className = 'note-actions';
-
-      const editBtn = document.createElement('button');
-      editBtn.className = 'note-btn edit';
-      editBtn.textContent = '編輯';
-      editBtn.onclick = () => startEdit(e);
-      actions.appendChild(editBtn);
-
-      const delBtn = document.createElement('button');
-      delBtn.className = 'note-btn delete';
-      delBtn.textContent = '刪除';
-      delBtn.onclick = () => { if (confirm('確定刪除這篇筆記？')) notesRef.child(e.key).remove(); };
-      actions.appendChild(delBtn);
-
-      meta.appendChild(actions);
-    }
-    entry.appendChild(meta);
-
-    if (e.title){
-      const titleDiv = document.createElement('div');
-      titleDiv.className = 'video-title';
-      if (e.url){
-        const a = document.createElement('a');
-        a.href = e.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
-        a.textContent = e.title;
-        titleDiv.appendChild(a);
-      } else {
-        titleDiv.textContent = e.title;
-      }
-      entry.appendChild(titleDiv);
-    }
-    if (e.url){
-      const srcDiv = document.createElement('div');
-      srcDiv.className = 'video-src';
-      srcDiv.textContent = '▶ 原片：' + e.url;
-      entry.appendChild(srcDiv);
-    }
-
-    const textDiv = document.createElement('div');
-    textDiv.className = 'note-text';
-    textDiv.innerHTML = e.text || '';
-    entry.appendChild(textDiv);
-
-    notesList.appendChild(entry);
+  tags.forEach(function(t){
+    var b = document.createElement('button');
+    b.className = 'tag-chip' + (activeTag === t ? ' active' : '');
+    b.textContent = '#' + t + ' ' + counts[t];
+    b.onclick = function(){ activeTag = (activeTag === t ? null : t); render(); };
+    chipsEl.appendChild(b);
   });
 }
 
-notesRef.on('value', renderNotes);
+function render(){
+  var isAdmin = auth.currentUser && auth.currentUser.uid === ADMIN_UID;
+  renderChips();
 
-loginBtn.onclick = () => { loginForm.style.display = 'flex'; };
+  var shown = entries.filter(function(e){
+    if (activeTag && (e.tags||[]).indexOf(activeTag) === -1) return false;
+    if (query){
+      var hay = ((e.title||'') + ' ' + (e.text||'') + ' ' + (e.tags||[]).join(' ')).toLowerCase();
+      if (hay.indexOf(query) === -1) return false;
+    }
+    return true;
+  });
 
-loginForm.addEventListener('submit', (ev) => {
-  ev.preventDefault();
-  const email = document.getElementById('login-email').value;
-  const pw = document.getElementById('login-pw').value;
-  auth.signInWithEmailAndPassword(email, pw)
-    .then(() => { loginForm.reset(); })
-    .catch(err => alert('登入失敗：' + err.message));
+  countEl.textContent = shown.length + ' / ' + entries.length + ' 篇';
+  listEl.innerHTML = '';
+
+  if (!shown.length){
+    var msg = entries.length ? '沒有符合條件的筆記。' : '還沒有影片筆記。';
+    listEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1">' + msg + '</div>';
+    return;
+  }
+
+  shown.forEach(function(e){
+    var card = document.createElement('div');
+    card.className = 'video-card';
+
+    var id = ytId(e.url);
+    if (id){
+      var a = document.createElement('a');
+      a.className = 'video-thumb';
+      a.href = e.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.style.backgroundImage = "url('https://i.ytimg.com/vi/" + id + "/hqdefault.jpg')";
+      card.appendChild(a);
+    }
+
+    var body = document.createElement('div');
+    body.className = 'video-body';
+
+    var d = document.createElement('div');
+    d.className = 'video-date';
+    d.textContent = e.date || '';
+    body.appendChild(d);
+
+    var title;
+    if (e.url){
+      title = document.createElement('a');
+      title.href = e.url;
+      title.target = '_blank';
+      title.rel = 'noopener noreferrer';
+    } else {
+      title = document.createElement('div');
+    }
+    title.className = 'video-title';
+    title.textContent = e.title || '(無標題)';
+    body.appendChild(title);
+
+    var note = document.createElement('div');
+    note.className = 'video-note clamped';
+    note.appendChild(KENDO.linkifyTimestamps(e.text || '', e.url));
+    body.appendChild(note);
+
+    var more = document.createElement('button');
+    more.className = 'video-more';
+    more.textContent = '展開全文 ↓';
+    more.onclick = function(){
+      var stillClamped = note.classList.toggle('clamped');
+      more.textContent = stillClamped ? '展開全文 ↓' : '收合 ↑';
+    };
+    body.appendChild(more);
+    requestAnimationFrame(function(){
+      if (note.scrollHeight <= note.clientHeight + 2) more.style.display = 'none';
+    });
+
+    if ((e.tags||[]).length){
+      var tw = document.createElement('div');
+      tw.className = 'entry-tags';
+      e.tags.forEach(function(t){
+        var b = document.createElement('button');
+        b.className = 'entry-tag';
+        b.textContent = '#' + t;
+        b.onclick = function(){
+          activeTag = (activeTag === t ? null : t);
+          render();
+          window.scrollTo({top:0,behavior:'smooth'});
+        };
+        tw.appendChild(b);
+      });
+      body.appendChild(tw);
+    }
+
+    if (isAdmin){
+      var foot = document.createElement('div');
+      foot.className = 'video-foot';
+
+      var ed = document.createElement('button');
+      ed.className = 'note-btn edit';
+      ed.textContent = '編輯';
+      ed.onclick = function(){ startEdit(e); };
+      foot.appendChild(ed);
+
+      var del = document.createElement('button');
+      del.className = 'note-btn delete';
+      del.textContent = '刪除';
+      del.onclick = function(){ if (confirm('確定刪除這篇影片筆記？')) ref.child(e.key).remove(); };
+      foot.appendChild(del);
+
+      body.appendChild(foot);
+    }
+
+    card.appendChild(body);
+    listEl.appendChild(card);
+  });
+}
+
+/* ---------- data ---------- */
+ref.on('value', function(snap){
+  entries = [];
+  snap.forEach(function(c){
+    var v = c.val() || {};
+    entries.push({
+      key: c.key,
+      date: v.date || '',
+      title: v.title || '',
+      url: v.url || '',
+      text: v.text || '',
+      tags: Array.isArray(v.tags) ? v.tags : (v.tags ? parseTags(v.tags) : []),
+      timestamp: v.timestamp || 0
+    });
+  });
+  entries.sort(function(a,b){ return (b.timestamp||0) - (a.timestamp||0); });
+  render();
 });
 
-logoutBtn.onclick = () => auth.signOut();
+/* ---------- filter events ---------- */
+searchEl.addEventListener('input', function(){
+  query = searchEl.value.trim().toLowerCase();
+  render();
+});
 
-auth.onAuthStateChanged(user => {
-  const isAdmin = user && user.uid === ADMIN_UID;
+/* ---------- auth ---------- */
+loginBtn.onclick = function(){ loginForm.style.display = 'flex'; };
+
+loginForm.addEventListener('submit', function(ev){
+  ev.preventDefault();
+  auth.signInWithEmailAndPassword(
+    document.getElementById('login-email').value,
+    document.getElementById('login-pw').value
+  ).then(function(){ loginForm.reset(); })
+   .catch(function(err){ alert('登入失敗：' + err.message); });
+});
+
+logoutBtn.onclick = function(){ auth.signOut(); };
+
+auth.onAuthStateChanged(function(user){
+  var isAdmin = user && user.uid === ADMIN_UID;
   loginForm.style.display = 'none';
   loginBtn.style.display = isAdmin ? 'none' : 'inline-block';
   logoutBtn.style.display = isAdmin ? 'inline-block' : 'none';
   addForm.style.display = isAdmin ? 'flex' : 'none';
-  notesRef.once('value').then(renderNotes);
+  render();
 });
 
-addForm.addEventListener('submit', (ev) => {
+/* ---------- submit ---------- */
+addForm.addEventListener('submit', function(ev){
   ev.preventDefault();
-  const dateVal = document.getElementById('note-date').value;
-  const titleVal = document.getElementById('note-title').value.trim();
-  const urlVal = document.getElementById('note-url').value.trim();
-  const textVal = document.getElementById('note-text-input').value.trim();
-  if (!dateVal || !titleVal || !textVal) return;
+  var dateVal = document.getElementById('f-date').value;
+  var title = document.getElementById('f-title').value.trim();
+  var url = document.getElementById('f-url').value.trim();
+  var tags = parseTags(document.getElementById('f-tags').value);
+  var text = document.getElementById('f-text').value.trim();
+  if (!dateVal || !title || !text) return;
 
-  const payload = {
-    date: formatDate(dateVal),
-    title: titleVal,
-    url: urlVal,
-    text: textVal.replace(/\n/g, '<br>')
-  };
+  var payload = { date: formatDate(dateVal), title: title, url: url, tags: tags, text: text };
 
   if (editingKey){
-    notesRef.child(editingKey).update(payload)
+    ref.child(editingKey).update(payload)
       .then(resetForm)
-      .catch(err => alert('更新失敗：' + err.message));
+      .catch(function(err){ alert('更新失敗：' + err.message); });
   } else {
-    notesRef.push({ ...payload, timestamp: Date.now() })
+    payload.timestamp = Date.now();
+    ref.push(payload)
       .then(resetForm)
-      .catch(err => alert('發布失敗：' + err.message));
+      .catch(function(err){ alert('發布失敗：' + err.message); });
   }
 });
 </script>

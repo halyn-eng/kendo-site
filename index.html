@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>劍道學習手冊</title>
-<link rel="stylesheet" href="style.css?v=20260719h">
+<link rel="stylesheet" href="style.css?v=20260719j">
 </head>
 <body>
 
@@ -216,33 +216,263 @@
 
 <section class="lp-section">
   <div class="lp-head">
-    <span class="lp-num">04 — 歷程</span>
-    <h2>學習的軌跡</h2>
-    <p>從練習心得裡挑出來的幾個里程碑。</p>
+    <span class="lp-num">04 — 最新</span>
+    <h2>最近在練什麼</h2>
+    <p>自動顯示最新的練習心得與影片筆記。</p>
   </div>
 
-  <div class="lp-timeline">
+  <div class="lp-timeline" id="latest-timeline">
     <div class="lp-tl-item">
-      <div class="lp-tl-date">2026 / 07 / 17</div>
-      <div class="lp-tl-text">學會抓「退擊面」的時機——鍔迫り合い後先踏み込み打到，才後退。</div>
-    </div>
-    <div class="lp-tl-item">
-      <div class="lp-tl-date">2026 / 07 / 19</div>
-      <div class="lp-tl-text">學小さい面、小さい胴，開始懂得「補面得分」的觀念。</div>
+      <div class="lp-tl-date">載入中…</div>
+      <div class="lp-tl-text"></div>
     </div>
   </div>
 
-  <div class="lp-more"><a href="notes.html" class="lp-link">看完整練習心得 →</a></div>
+  <div class="video-grid" id="latest-video" style="margin-top:2.5rem;max-width:380px"></div>
+
+  <div class="lp-more">
+    <a href="notes.html" class="lp-link">看完整練習心得 →</a>
+    &nbsp;&nbsp;<a href="tags.html" class="lp-link">用標籤瀏覽全部 →</a>
+  </div>
+</section>
+
+<div class="lp-rule"><hr></div>
+
+<section class="contact-section" id="contact">
+  <span class="lp-num">05 — 聯絡</span>
+  <h2>一起練劍道吧</h2>
+  <p class="lead">
+    不管是想交劍道的朋友、指出我寫錯的地方、或是想討論某個技的細節，
+    都歡迎留言給我。內容只有我看得到，我會盡量回覆。
+  </p>
+
+  <form class="contact-form" id="contact-form">
+    <div class="contact-row">
+      <input type="text" id="c-name" placeholder="怎麼稱呼你？" maxlength="50" required>
+      <input type="text" id="c-contact" placeholder="Email 或 IG（方便我回你）" maxlength="100" required>
+    </div>
+    <textarea id="c-text" placeholder="想說的話…" maxlength="1500" required></textarea>
+    <div class="contact-note">留言不會公開顯示，只有站長本人登入後看得到。</div>
+    <button type="submit" class="btn-save" id="c-submit">送出留言</button>
+  </form>
+
+  <div class="contact-ok" id="contact-ok" style="display:none">
+    留言送出了，謝謝你！<br>我會透過你留的方式回覆。
+  </div>
+
+  <div class="inbox" id="inbox" style="display:none">
+    <h3>收到的留言</h3>
+    <div id="inbox-list"></div>
+  </div>
 </section>
 
 <footer>
   道館規定：面・小手・胴 only（無突き）
 </footer>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="app.js?v=20260719j"></script>
 <script>
-function toggleMenu() {
-  document.getElementById('mobileMenu').classList.toggle('open');
-}
+/* ===== 最新動態：自動抓 Firebase，不用每次手動改首頁 ===== */
+var fb = KENDO.init();
+var db = fb.db, auth = fb.auth;
+
+var tlEl = document.getElementById('latest-timeline');
+var vidEl = document.getElementById('latest-video');
+
+db.ref('notes').limitToLast(3).on('value', function(snap){
+  var arr = [];
+  snap.forEach(function(c){
+    var v = c.val() || {};
+    arr.push({ date: v.date || '', text: KENDO.stripHtml(v.text), tags: KENDO.normTags(v.tags), ts: v.timestamp || 0 });
+  });
+  arr.sort(function(a,b){ return b.ts - a.ts; });
+  arr = arr.slice(0, 2);
+
+  tlEl.innerHTML = '';
+  if (!arr.length){
+    tlEl.innerHTML = '<div class="lp-tl-item"><div class="lp-tl-date">—</div><div class="lp-tl-text">還沒有練習心得。</div></div>';
+    return;
+  }
+  arr.forEach(function(e){
+    var item = document.createElement('div');
+    item.className = 'lp-tl-item';
+
+    var d = document.createElement('div');
+    d.className = 'lp-tl-date';
+    d.textContent = (e.date || '').replace(/\//g, ' / ');
+    item.appendChild(d);
+
+    var wrap = document.createElement('div');
+    var t = document.createElement('div');
+    t.className = 'lp-tl-text';
+    var txt = e.text.replace(/\n+/g, ' ');
+    t.textContent = txt.length > 90 ? txt.slice(0, 90) + '…' : txt;
+    wrap.appendChild(t);
+
+    if (e.tags.length){
+      var tw = document.createElement('div');
+      tw.className = 'entry-tags';
+      e.tags.slice(0, 4).forEach(function(tag){
+        var a = document.createElement('a');
+        a.className = 'entry-tag';
+        a.href = KENDO.tagUrl(tag);
+        a.style.textDecoration = 'none';
+        a.textContent = '#' + tag;
+        tw.appendChild(a);
+      });
+      wrap.appendChild(tw);
+    }
+    item.appendChild(wrap);
+    tlEl.appendChild(item);
+  });
+});
+
+db.ref('videos').limitToLast(3).on('value', function(snap){
+  var arr = [];
+  snap.forEach(function(c){
+    var v = c.val() || {};
+    arr.push({ date: v.date || '', title: v.title || '', url: v.url || '',
+               text: KENDO.stripHtml(v.text), tags: KENDO.normTags(v.tags), ts: v.timestamp || 0 });
+  });
+  arr.sort(function(a,b){ return b.ts - a.ts; });
+
+  vidEl.innerHTML = '';
+  if (!arr.length) return;
+  var e = arr[0];
+
+  var card = document.createElement('div');
+  card.className = 'video-card';
+
+  var thumb = KENDO.ytThumb(e.url);
+  if (thumb){
+    var a = document.createElement('a');
+    a.className = 'video-thumb';
+    a.href = e.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    a.style.backgroundImage = "url('" + thumb + "')";
+    card.appendChild(a);
+  }
+
+  var body = document.createElement('div');
+  body.className = 'video-body';
+
+  var d = document.createElement('div');
+  d.className = 'video-date';
+  d.textContent = '最新影片筆記 · ' + e.date;
+  body.appendChild(d);
+
+  var title = e.url ? document.createElement('a') : document.createElement('div');
+  if (e.url){ title.href = e.url; title.target = '_blank'; title.rel = 'noopener noreferrer'; }
+  title.className = 'video-title';
+  title.textContent = e.title || '(無標題)';
+  body.appendChild(title);
+
+  var note = document.createElement('div');
+  note.className = 'video-note clamped';
+  note.textContent = e.text;
+  body.appendChild(note);
+
+  var more = document.createElement('a');
+  more.className = 'video-more';
+  more.href = 'videos.html';
+  more.style.textDecoration = 'none';
+  more.textContent = '看全部影片筆記 →';
+  body.appendChild(more);
+
+  card.appendChild(body);
+  vidEl.appendChild(card);
+});
+
+/* ===== 聯絡表單 ===== */
+var cForm = document.getElementById('contact-form');
+var cOk = document.getElementById('contact-ok');
+var cSubmit = document.getElementById('c-submit');
+
+cForm.addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var name = document.getElementById('c-name').value.trim();
+  var contact = document.getElementById('c-contact').value.trim();
+  var text = document.getElementById('c-text').value.trim();
+  if (!name || !contact || !text) return;
+
+  cSubmit.disabled = true;
+  cSubmit.textContent = '送出中…';
+
+  db.ref('messages').push({
+    name: name.slice(0, 50),
+    contact: contact.slice(0, 100),
+    text: text.slice(0, 1500),
+    timestamp: Date.now()
+  }).then(function(){
+    cForm.style.display = 'none';
+    cOk.style.display = 'block';
+  }).catch(function(err){
+    alert('送出失敗：' + err.message);
+    cSubmit.disabled = false;
+    cSubmit.textContent = '送出留言';
+  });
+});
+
+/* ===== 站長收件匣（登入後才看得到） ===== */
+var inbox = document.getElementById('inbox');
+var inboxList = document.getElementById('inbox-list');
+
+auth.onAuthStateChanged(function(user){
+  if (!KENDO.isAdmin(user)){ inbox.style.display = 'none'; return; }
+  inbox.style.display = 'block';
+
+  db.ref('messages').on('value', function(snap){
+    var arr = [];
+    snap.forEach(function(c){ arr.push(Object.assign({ key: c.key }, c.val() || {})); });
+    arr.sort(function(a,b){ return (b.timestamp||0) - (a.timestamp||0); });
+
+    inboxList.innerHTML = '';
+    if (!arr.length){
+      inboxList.innerHTML = '<div class="empty-state">還沒有收到留言。</div>';
+      return;
+    }
+    arr.forEach(function(m){
+      var item = document.createElement('div');
+      item.className = 'msg-item';
+
+      var head = document.createElement('div');
+      head.className = 'msg-head';
+
+      var who = document.createElement('span');
+      who.innerHTML = '';
+      var strong = document.createElement('span');
+      strong.className = 'msg-from';
+      strong.textContent = m.name || '(匿名)';
+      who.appendChild(strong);
+      who.appendChild(document.createTextNode('　' + (m.contact || '')));
+      head.appendChild(who);
+
+      var right = document.createElement('span');
+      var when = document.createElement('span');
+      when.textContent = m.timestamp ? new Date(m.timestamp).toLocaleDateString('zh-TW') : '';
+      right.appendChild(when);
+
+      var del = document.createElement('button');
+      del.className = 'note-btn delete';
+      del.style.cssText = 'margin-left:10px;font-size:11.5px;padding:3px 11px;border-radius:2px;border:1px solid var(--line);background:var(--paper-2);color:var(--ink-soft);font-family:inherit;cursor:pointer';
+      del.textContent = '刪除';
+      del.onclick = function(){ if (confirm('刪除這則留言？')) db.ref('messages').child(m.key).remove(); };
+      right.appendChild(del);
+
+      head.appendChild(right);
+      item.appendChild(head);
+
+      var body = document.createElement('div');
+      body.className = 'msg-body';
+      body.textContent = m.text || '';
+      item.appendChild(body);
+
+      inboxList.appendChild(item);
+    });
+  });
+});
 </script>
 <script>
 document.querySelectorAll('[data-img]').forEach(function(el){

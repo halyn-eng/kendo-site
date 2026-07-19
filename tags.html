@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>標籤總覽 — 劍道學習手冊</title>
+<link rel="stylesheet" href="style.css?v=20260719j">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand"><span class="brand-icon">⚔</span>劍道學習手冊</a>
+    <ul class="navbar-links">
+      <li><a href="terms.html">基礎知識</a></li>
+      <li><a href="reading.html">読み練習</a></li>
+      <li><a href="errors.html">常見錯誤</a></li>
+      <li><a href="daily.html">每日練習</a></li>
+      <li><a href="notes.html">練習心得</a></li>
+      <li><a href="videos.html">影片筆記</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="terms.html">基礎知識</a>
+    <a href="reading.html">読み練習</a>
+    <a href="errors.html">常見錯誤</a>
+    <a href="daily.html">每日練習</a>
+    <a href="notes.html">練習心得</a>
+    <a href="videos.html">影片筆記</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>標籤總覽</h1>
+  <p>同一個標籤，同時看到自己的練習心得和日本影片的講法</p>
+</div>
+
+<div class="content">
+
+  <div class="filter-bar">
+    <div class="filter-row">
+      <input type="text" id="search" class="search-input" placeholder="搜尋所有心得與影片筆記…">
+      <span class="filter-count" id="count"></span>
+    </div>
+  </div>
+
+  <div class="tag-cloud" id="cloud"></div>
+
+  <div class="mix-list" id="list">
+    <div class="empty-state">載入中…</div>
+  </div>
+
+</div>
+
+<footer>道館規定：面・小手・胴 only（無突き）</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="app.js?v=20260719j"></script>
+<script>
+var fb = KENDO.init();
+var db = fb.db;
+
+var items = [];
+var loaded = { notes: false, videos: false };
+var activeTag = null;
+var query = '';
+
+var cloudEl = document.getElementById('cloud');
+var listEl = document.getElementById('list');
+var searchEl = document.getElementById('search');
+var countEl = document.getElementById('count');
+
+/* 從網址讀 ?tag=xxx，讓其他頁的標籤可以直接連過來 */
+(function () {
+  var p = new URLSearchParams(location.search).get('tag');
+  if (p) activeTag = p;
+})();
+
+function sortKey(e) { return e.timestamp || 0; }
+
+function collect(snap, kind) {
+  snap.forEach(function (c) {
+    var v = c.val() || {};
+    items.push({
+      key: c.key,
+      kind: kind,
+      date: v.date || '',
+      title: v.title || '',
+      url: v.url || '',
+      text: KENDO.stripHtml(v.text),
+      tags: KENDO.normTags(v.tags),
+      timestamp: v.timestamp || 0
+    });
+  });
+}
+
+function renderCloud() {
+  var counts = {};
+  items.forEach(function (e) {
+    e.tags.forEach(function (t) { counts[t] = (counts[t] || 0) + 1; });
+  });
+  var tags = Object.keys(counts).sort(function (a, b) {
+    return counts[b] - counts[a] || a.localeCompare(b);
+  });
+
+  cloudEl.innerHTML = '';
+  if (!tags.length) return;
+
+  var all = document.createElement('button');
+  all.className = 'tag-chip' + (activeTag === null ? ' active' : '');
+  all.textContent = '全部 ' + items.length;
+  all.onclick = function () { setTag(null); };
+  cloudEl.appendChild(all);
+
+  tags.forEach(function (t) {
+    var b = document.createElement('button');
+    b.className = 'tag-chip' + (activeTag === t ? ' active' : '');
+    b.textContent = '#' + t + ' ' + counts[t];
+    b.onclick = function () { setTag(activeTag === t ? null : t); };
+    cloudEl.appendChild(b);
+  });
+}
+
+function setTag(t) {
+  activeTag = t;
+  var url = t ? ('?tag=' + encodeURIComponent(t)) : location.pathname;
+  history.replaceState(null, '', url);
+  render();
+}
+
+function render() {
+  renderCloud();
+
+  var shown = items.filter(function (e) {
+    if (activeTag && e.tags.indexOf(activeTag) === -1) return false;
+    if (query) {
+      var hay = (e.title + ' ' + e.text + ' ' + e.tags.join(' ') + ' ' + e.date).toLowerCase();
+      if (hay.indexOf(query) === -1) return false;
+    }
+    return true;
+  });
+
+  countEl.textContent = shown.length + ' / ' + items.length + ' 篇';
+  listEl.innerHTML = '';
+
+  if (!shown.length) {
+    listEl.innerHTML = '<div class="empty-state">' +
+      (items.length ? '這個標籤下還沒有內容。' : '還沒有任何記錄。') + '</div>';
+    return;
+  }
+
+  shown.forEach(function (e) {
+    var thumb = e.kind === 'video' ? KENDO.ytThumb(e.url) : null;
+
+    var row = document.createElement('div');
+    row.className = 'mix-item' + (thumb ? '' : ' no-thumb');
+
+    if (thumb) {
+      var ta = document.createElement('a');
+      ta.className = 'mix-thumb';
+      ta.href = e.url;
+      ta.target = '_blank';
+      ta.rel = 'noopener noreferrer';
+      ta.style.backgroundImage = "url('" + thumb + "')";
+      row.appendChild(ta);
+    }
+
+    var body = document.createElement('div');
+
+    var head = document.createElement('div');
+    var kind = document.createElement('span');
+    kind.className = 'mix-kind' + (e.kind === 'video' ? ' video' : '');
+    kind.textContent = e.kind === 'video' ? '影片筆記' : '練習心得';
+    head.appendChild(kind);
+    var dt = document.createElement('span');
+    dt.className = 'mix-date';
+    dt.textContent = e.date;
+    head.appendChild(dt);
+    body.appendChild(head);
+
+    var title;
+    if (e.kind === 'video') {
+      title = e.url ? document.createElement('a') : document.createElement('div');
+      if (e.url) { title.href = e.url; title.target = '_blank'; title.rel = 'noopener noreferrer'; }
+      title.textContent = e.title || '(無標題)';
+    } else {
+      title = document.createElement('a');
+      title.href = 'notes.html';
+      title.textContent = e.date + ' 的練習心得';
+    }
+    title.className = 'mix-title';
+    body.appendChild(title);
+
+    var tx = document.createElement('div');
+    tx.className = 'mix-text';
+    tx.textContent = e.text;
+    body.appendChild(tx);
+
+    if (e.tags.length) {
+      var tw = document.createElement('div');
+      tw.className = 'entry-tags';
+      e.tags.forEach(function (t) {
+        var b = document.createElement('button');
+        b.className = 'entry-tag';
+        b.textContent = '#' + t;
+        b.onclick = function () { setTag(activeTag === t ? null : t); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+        tw.appendChild(b);
+      });
+      body.appendChild(tw);
+    }
+
+    row.appendChild(body);
+    listEl.appendChild(row);
+  });
+}
+
+function maybeRender() {
+  if (loaded.notes && loaded.videos) {
+    items.sort(function (a, b) { return sortKey(b) - sortKey(a); });
+    render();
+  }
+}
+
+db.ref('notes').on('value', function (snap) {
+  items = items.filter(function (i) { return i.kind !== 'note'; });
+  collect(snap, 'note');
+  loaded.notes = true;
+  maybeRender();
+});
+
+db.ref('videos').on('value', function (snap) {
+  items = items.filter(function (i) { return i.kind !== 'video'; });
+  collect(snap, 'video');
+  loaded.videos = true;
+  maybeRender();
+});
+
+searchEl.addEventListener('input', function () {
+  query = searchEl.value.trim().toLowerCase();
+  render();
+});
+</script>
+</body>
+</html>
