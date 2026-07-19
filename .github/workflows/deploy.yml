@@ -20,6 +20,7 @@ jobs:
         run: |
           mkdir -p public
           cp index.html terms.html reading.html errors.html daily.html notes.html style.css public/
+          if [ -d images ]; then cp -r images public/; fi
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
