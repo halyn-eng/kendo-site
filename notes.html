@@ -10,37 +10,36 @@
 .auth-bar button{padding:6px 16px;font-size:13px}
 #login-form{max-width:320px;margin-left:auto;margin-bottom:1.5rem}
 .note-actions{display:flex;gap:6px}
-.note-btn{font-size:12px;padding:3px 10px;border-radius:6px;border:1px solid #e0dfd7;background:#fff;color:#5f5e5a;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
-.note-btn:hover{background:#f5f4f0}
-.note-btn.edit:hover{color:#185fa5;border-color:#185fa5}
-.note-btn.delete:hover{color:#c0392b;border-color:#c0392b}
+.note-btn{font-size:11.5px;padding:3px 11px;border-radius:2px;border:1px solid var(--line);background:var(--paper-2);color:var(--ink-soft);font-family:inherit;cursor:pointer;transition:background .18s,color .18s,border-color .18s}
+.note-btn:hover{background:var(--line-soft);color:var(--ink);border-color:var(--ink-faint)}
+.note-btn.delete:hover{color:var(--accent);border-color:var(--accent)}
 </style>
 </head>
 <body>
 
 <nav class="navbar">
   <div class="navbar-inner">
-    <a href="index.html" class="navbar-brand"><span class="brand-icon">⚔️</span>劍道學習手冊</a>
+    <a href="index.html" class="navbar-brand"><span class="brand-icon">⚔</span>劍道學習手冊</a>
     <ul class="navbar-links">
-      <li><a href="terms.html">📖 名詞解釋</a></li>
-      <li><a href="reading.html">🎯 読み練習</a></li>
-      <li><a href="errors.html">⚠️ 常見錯誤</a></li>
-      <li><a href="daily.html">📅 每日練習</a></li>
-      <li><a href="notes.html" class="active">📝 練習心得</a></li>
+      <li><a href="terms.html">名詞解釋</a></li>
+      <li><a href="reading.html">読み練習</a></li>
+      <li><a href="errors.html">常見錯誤</a></li>
+      <li><a href="daily.html">每日練習</a></li>
+      <li><a href="notes.html" class="active">練習心得</a></li>
     </ul>
     <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   </div>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="terms.html">📖 名詞解釋</a>
-    <a href="reading.html">🎯 読み練習</a>
-    <a href="errors.html">⚠️ 常見錯誤</a>
-    <a href="daily.html">📅 每日練習</a>
-    <a href="notes.html" class="active">📝 練習心得</a>
+    <a href="terms.html">名詞解釋</a>
+    <a href="reading.html">読み練習</a>
+    <a href="errors.html">常見錯誤</a>
+    <a href="daily.html">每日練習</a>
+    <a href="notes.html" class="active">練習心得</a>
   </div>
 </nav>
 
 <div class="page-header">
-  <h1>📝 練習心得</h1>
+  <h1>練習心得</h1>
   <p>記錄每次稽古的收穫・問題・進步</p>
 </div>
 
@@ -67,7 +66,7 @@
   </form>
 
   <div id="notes-list">
-    <div style="text-align:center;color:#aaa;padding:3rem;font-size:14px">載入中...</div>
+    <div style="text-align:center;color:var(--ink-faint);padding:3.5rem;font-size:13.5px">載入中...</div>
   </div>
 
 </div>
@@ -141,7 +140,7 @@ function renderNotes(snapshot){
 
   notesList.innerHTML = '';
   if (entries.length === 0){
-    notesList.innerHTML = '<div style="text-align:center;color:#aaa;padding:3rem;font-size:14px">還沒有心得記錄。</div>';
+    notesList.innerHTML = '<div style="text-align:center;color:var(--ink-faint);padding:3.5rem;font-size:13.5px">還沒有心得記錄。</div>';
     return;
   }
   entries.forEach(e => {

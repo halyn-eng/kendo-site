@@ -11,177 +11,215 @@
 <nav class="navbar">
   <div class="navbar-inner">
     <a href="index.html" class="navbar-brand">
-      <span class="brand-icon">⚔️</span>
+      <span class="brand-icon">⚔</span>
       劍道學習手冊
     </a>
     <ul class="navbar-links">
-      <li><a href="terms.html">📖 名詞解釋</a></li>
-      <li><a href="reading.html">🎯 読み練習</a></li>
-      <li><a href="errors.html">⚠️ 常見錯誤</a></li>
-      <li><a href="daily.html">📅 每日練習</a></li>
-      <li><a href="notes.html">📝 練習心得</a></li>
+      <li><a href="terms.html">名詞解釋</a></li>
+      <li><a href="reading.html">読み練習</a></li>
+      <li><a href="errors.html">常見錯誤</a></li>
+      <li><a href="daily.html">每日練習</a></li>
+      <li><a href="notes.html">練習心得</a></li>
     </ul>
     <button class="hamburger" onclick="toggleMenu()" aria-label="選單">
       <span></span><span></span><span></span>
     </button>
   </div>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="terms.html">📖 名詞解釋</a>
-    <a href="reading.html">🎯 読み練習</a>
-    <a href="errors.html">⚠️ 常見錯誤</a>
-    <a href="daily.html">📅 每日練習</a>
-    <a href="notes.html">📝 練習心得</a>
+    <a href="terms.html">名詞解釋</a>
+    <a href="reading.html">読み練習</a>
+    <a href="errors.html">常見錯誤</a>
+    <a href="daily.html">每日練習</a>
+    <a href="notes.html">練習心得</a>
   </div>
 </nav>
 
-<section class="hero">
-  <h1>⚔️ 劍道學習手冊</h1>
-  <p>中文的劍道學習資源太少了，很多東西只能站在旁邊偷看、自己回家慢慢摸索。<br>這裡想把這些內容好好整理出來，讓大家開開心心學劍道 🎉</p>
+<header class="lp-hero">
+  <div class="lp-kicker">One Topic, One Goal</div>
+  <h1>不用再靠偷師，<br>把劍道好好學起來。</h1>
+  <p class="lead">
+    中文的劍道學習資源太少了，很多細節只能站在旁邊觀察、自己回家慢慢摸索。
+    這裡把基本功、技巧、術語一項一項整理成看得懂的中文——一次搞懂一個概念，穩紮穩打。
+  </p>
+  <div class="lp-actions">
+    <a href="terms.html" class="lp-btn">從基礎開始</a>
+    <a href="notes.html" class="lp-link">看練習心得 →</a>
+  </div>
+</header>
 
-  <div class="goal-box">
-    <div class="goal-label">🎯 這個網站的目標</div>
-    <div class="goal-text">把劍道的基本功、技巧、心法整理成中文資料——One Topic, One Goal，一次搞懂一個概念，不用再靠偷師，穩紮穩打學起來。</div>
+<div class="lp-rule"><hr></div>
+
+<section class="lp-statement">
+  <blockquote>
+    「傳統武道的教學常常是自己看、自己悟。<br>
+    但那些沒被說出口的細節，其實可以寫下來。」
+  </blockquote>
+  <cite>— 這個網站想做的事</cite>
+</section>
+
+<div class="lp-rule"><hr></div>
+
+<section class="lp-section">
+  <div class="lp-head">
+    <span class="lp-num">01 — 內容</span>
+    <h2>五個章節，涵蓋從入門到日常練習</h2>
+    <p>每個章節專注一件事，需要什麼直接翻到那一頁。</p>
   </div>
 
-  <div class="hero-cards" style="margin-top:2rem">
-    <a href="terms.html" class="hero-card">
-      <div class="card-icon">📖</div>
-      <div class="card-title">名詞解釋</div>
-      <div class="card-desc">姿勢・腳步・技の種類</div>
+  <nav class="lp-index">
+    <a href="terms.html">
+      <span class="i-num">01</span>
+      <span>
+        <span class="i-title">名詞解釋</span>
+        <span class="i-desc">裝備穿戴・基本姿勢・技の種類・距離與接觸</span>
+      </span>
+      <span class="i-arrow">→</span>
     </a>
-    <a href="reading.html" class="hero-card">
-      <div class="card-icon">🎯</div>
-      <div class="card-title">読み練習</div>
-      <div class="card-desc">對應策略・間合い表</div>
+    <a href="reading.html">
+      <span class="i-num">02</span>
+      <span>
+        <span class="i-title">読み練習</span>
+        <span class="i-desc">看懂對方的起こり，對應策略與間合い對照表</span>
+      </span>
+      <span class="i-arrow">→</span>
     </a>
-    <a href="errors.html" class="hero-card">
-      <div class="card-icon">⚠️</div>
-      <div class="card-title">常見錯誤</div>
-      <div class="card-desc">踏み込み・読み・構え</div>
+    <a href="errors.html">
+      <span class="i-num">03</span>
+      <span>
+        <span class="i-title">常見錯誤</span>
+        <span class="i-desc">踏み込み・読み・構え，錯誤與正確的對照</span>
+      </span>
+      <span class="i-arrow">→</span>
     </a>
-    <a href="daily.html" class="hero-card">
-      <div class="card-icon">📅</div>
-      <div class="card-title">每日練習</div>
-      <div class="card-desc">15分鐘結構・週輪替表</div>
+    <a href="daily.html">
+      <span class="i-num">04</span>
+      <span>
+        <span class="i-title">每日練習</span>
+        <span class="i-desc">15 分鐘練習結構、素振り週輪替表</span>
+      </span>
+      <span class="i-arrow">→</span>
     </a>
-    <a href="notes.html" class="hero-card">
-      <div class="card-icon">📝</div>
-      <div class="card-title">練習心得</div>
-      <div class="card-desc">每次稽古的收穫記錄</div>
+    <a href="notes.html">
+      <span class="i-num">05</span>
+      <span>
+        <span class="i-title">練習心得</span>
+        <span class="i-desc">每次稽古的收穫、卡關與突破的記錄</span>
+      </span>
+      <span class="i-arrow">→</span>
+    </a>
+  </nav>
+</section>
+
+<section class="lp-section">
+  <div class="lp-head">
+    <span class="lp-num">02 — 入門</span>
+    <h2>新手最先需要知道的九件事</h2>
+    <p>從怎麼把裝備穿好，到三個最該先練熟的技。</p>
+  </div>
+
+  <div class="lp-grid">
+    <a href="terms.html#dogi">
+      <span class="c-num">01</span>
+      <div class="c-name">道衣・袴</div>
+      <div class="c-desc">上衣左壓右，袴繩前後交叉的綁法</div>
+    </a>
+    <a href="terms.html#gear-order">
+      <span class="c-num">02</span>
+      <div class="c-name">護具穿戴順序</div>
+      <div class="c-desc">垂れ → 胴 → 面 → 小手，順序不能亂</div>
+    </a>
+    <a href="terms.html#men-tie">
+      <span class="c-num">03</span>
+      <div class="c-name">面怎麼戴</div>
+      <div class="c-desc">手ぬぐい包頭，面紐的綁法與鬆緊拿捏</div>
+    </a>
+    <a href="terms.html">
+      <span class="c-num">04</span>
+      <div class="c-name">面（めん）</div>
+      <div class="c-desc">頭頂，三個有效打擊部位之一</div>
+    </a>
+    <a href="terms.html">
+      <span class="c-num">05</span>
+      <div class="c-name">小手（こて）</div>
+      <div class="c-desc">右手腕，三個有效打擊部位之一</div>
+    </a>
+    <a href="terms.html">
+      <span class="c-num">06</span>
+      <div class="c-name">胴（どう）</div>
+      <div class="c-desc">右脇腹，三個有效打擊部位之一</div>
+    </a>
+    <a href="terms.html">
+      <span class="c-num">07</span>
+      <div class="c-name">返し胴</div>
+      <div class="c-desc">接住對方打面，往右前斜步順勢打胴</div>
+      <span class="c-tag">初學首選</span>
+    </a>
+    <a href="terms.html">
+      <span class="c-num">08</span>
+      <div class="c-name">抜き面</div>
+      <div class="c-desc">閃開對方攻擊，讓他落空後打面</div>
+    </a>
+    <a href="terms.html">
+      <span class="c-num">09</span>
+      <div class="c-name">引き面</div>
+      <div class="c-desc">鍔迫り合い後，踏み込み打完才後退</div>
     </a>
   </div>
 </section>
 
-<section class="feature-row">
-  <div class="feature-graphic">🥋</div>
-  <div class="feature-text">
-    <h3>偷師時代，該結束了</h3>
-    <p>傳統武道教學常常是「自己看、自己悟」，很多眉角沒人會主動講。這個網站想把那些「教練隨口提一句、但很重要」的細節整理下來——面怎麼打才對、抜き面要抓什麼時機，通通寫成看得懂的中文，不用再靠偷師。</p>
-  </div>
-</section>
+<div class="lp-rule"><hr></div>
 
-<section class="feature-row reverse">
-  <div class="feature-graphic">📝</div>
-  <div class="feature-text">
-    <h3>邊學邊記錄，邊記錄邊進步</h3>
-    <p>每次稽古的心得都直接記在「練習心得」頁——今天學了什麼、卡在哪裡、教練說了什麼重點。寫下來才會真的內化，之後回頭看也能看到自己的進步軌跡。</p>
+<section class="lp-section">
+  <div class="lp-head">
+    <span class="lp-num">03 — 理念</span>
+    <h2>為什麼要做這個網站</h2>
   </div>
-</section>
 
-<section class="values-section">
-  <h2>這裡的理念</h2>
-  <p class="section-sub">為什麼要做這個網站</p>
-  <div class="values-grid">
-    <div class="value-card">
-      <div class="v-icon">🔓</div>
+  <div class="lp-values">
+    <div class="lp-value">
+      <span class="v-num">01</span>
       <div class="v-title">公開不藏私</div>
-      <div class="v-desc">把學到的東西整理出來分享，不是自己偷偷練就好。</div>
+      <div class="v-desc">學到的東西整理出來分享，不是自己偷偷練就好。</div>
     </div>
-    <div class="value-card">
-      <div class="v-icon">🪜</div>
+    <div class="lp-value">
+      <span class="v-num">02</span>
       <div class="v-title">循序漸進</div>
       <div class="v-desc">從基本功開始，一次搞懂一個概念，不貪多。</div>
     </div>
-    <div class="value-card">
-      <div class="v-icon">🇹🇼</div>
+    <div class="lp-value">
+      <span class="v-num">03</span>
       <div class="v-title">中文為主</div>
-      <div class="v-desc">日文術語附上中文說明和讀音，降低學習門檻。</div>
+      <div class="v-desc">日文術語附上中文說明與讀音，降低學習門檻。</div>
     </div>
-    <div class="value-card">
-      <div class="v-icon">✍️</div>
+    <div class="lp-value">
+      <span class="v-num">04</span>
       <div class="v-title">邊學邊記錄</div>
-      <div class="v-desc">每次練習的收穫都寫下來，累積成長軌跡。</div>
+      <div class="v-desc">每次練習的收穫都寫下來，累積成長的軌跡。</div>
     </div>
   </div>
 </section>
 
-<section class="grid6-section">
-  <h2>新手入門知識</h2>
-  <p class="section-sub">從穿裝備到基本技巧，先搞懂這幾個</p>
-  <div class="grid6">
-    <a href="terms.html#dogi" class="grid6-card">
-      <div class="g-icon">👘</div>
-      <div class="g-name">道衣・袴怎麼穿</div>
-      <div class="g-desc">上衣左壓右，袴繩前後交叉綁法</div>
-    </a>
-    <a href="terms.html#gear-order" class="grid6-card">
-      <div class="g-icon">🛡️</div>
-      <div class="g-name">護具介紹</div>
-      <div class="g-desc">垂れ→胴→面→小手，穿戴順序</div>
-    </a>
-    <a href="terms.html#men-tie" class="grid6-card">
-      <div class="g-icon">🪖</div>
-      <div class="g-name">面怎麼戴</div>
-      <div class="g-desc">手ぬぐい包頭，面紐綁法與鬆緊</div>
-    </a>
-    <a href="terms.html" class="grid6-card">
-      <div class="g-icon">🎯</div>
-      <div class="g-name">面（めん）</div>
-      <div class="g-desc">頭頂，基本打擊部位</div>
-    </a>
-    <a href="terms.html" class="grid6-card">
-      <div class="g-icon">🎯</div>
-      <div class="g-name">小手（こて）</div>
-      <div class="g-desc">右手腕，基本打擊部位</div>
-    </a>
-    <a href="terms.html" class="grid6-card">
-      <div class="g-icon">🎯</div>
-      <div class="g-name">胴（どう）</div>
-      <div class="g-desc">右脇腹，基本打擊部位</div>
-    </a>
-    <a href="terms.html" class="grid6-card">
-      <div class="g-icon">🔄</div>
-      <div class="g-name">返し胴</div>
-      <div class="g-desc">接住對方打面，順勢打胴</div>
-      <span class="g-star">★ 初學首選</span>
-    </a>
-    <a href="terms.html" class="grid6-card">
-      <div class="g-icon">💨</div>
-      <div class="g-name">抜き面</div>
-      <div class="g-desc">閃開對方攻擊，順勢打面</div>
-    </a>
-    <a href="terms.html" class="grid6-card">
-      <div class="g-icon">↩️</div>
-      <div class="g-name">引き面</div>
-      <div class="g-desc">鍔迫り合い後退擊面</div>
-    </a>
-  </div>
-</section>
+<div class="lp-rule"><hr></div>
 
-<section class="timeline-section">
-  <h2>學習歷程</h2>
-  <p class="section-sub">從練習心得裡挑幾個重要的里程碑</p>
-  <div class="timeline">
-    <div class="timeline-item">
-      <div class="timeline-date">2026/7/17</div>
-      <div class="timeline-text">學會抓「退擊面」的時機——鍔迫り合い後先踏み込み打到，才後退。</div>
+<section class="lp-section">
+  <div class="lp-head">
+    <span class="lp-num">04 — 歷程</span>
+    <h2>學習的軌跡</h2>
+    <p>從練習心得裡挑出來的幾個里程碑。</p>
+  </div>
+
+  <div class="lp-timeline">
+    <div class="lp-tl-item">
+      <div class="lp-tl-date">2026 / 07 / 17</div>
+      <div class="lp-tl-text">學會抓「退擊面」的時機——鍔迫り合い後先踏み込み打到，才後退。</div>
     </div>
-    <div class="timeline-item">
-      <div class="timeline-date">2026/7/19</div>
-      <div class="timeline-text">學小さい面、小さい胴，開始懂得「補面得分」的觀念。</div>
+    <div class="lp-tl-item">
+      <div class="lp-tl-date">2026 / 07 / 19</div>
+      <div class="lp-tl-text">學小さい面、小さい胴，開始懂得「補面得分」的觀念。</div>
     </div>
   </div>
-  <div class="timeline-more"><a href="notes.html">看完整練習心得 →</a></div>
+
+  <div class="lp-more"><a href="notes.html" class="lp-link">看完整練習心得 →</a></div>
 </section>
 
 <footer>
