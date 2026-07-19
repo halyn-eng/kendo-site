@@ -157,11 +157,17 @@ body {
   font-family: var(--serif);
   font-size: clamp(2.1rem, 5.5vw, 3.6rem);
   font-weight: 500;
-  line-height: 1.55;
+  line-height: 1.3;
   letter-spacing: 0.01em;
   margin-bottom: 1.75rem;
   max-width: 16em;
 }
+.lp-hero h1 .hl-line {
+  display: block;
+  width: fit-content;
+  margin-bottom: 0.32em;
+}
+.lp-hero h1 .hl-line:last-child { margin-bottom: 0; }
 .hl {
   background-color: #c3dab5;
   padding: 0.1em 0.28em;
