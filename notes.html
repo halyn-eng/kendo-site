@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>練習心得 — 劍道學習手冊</title>
-<link rel="stylesheet" href="style.css?v=20260719i">
+<link rel="stylesheet" href="style.css?v=20260719j">
 <style>
 .auth-bar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:1rem}
 .auth-bar button{padding:6px 16px;font-size:13px}
@@ -76,6 +76,7 @@
     <div class="filter-row">
       <input type="text" id="search" class="search-input" placeholder="搜尋心得內容…">
       <span class="filter-count" id="count"></span>
+      <a href="tags.html" class="tag-chip" style="text-decoration:none">標籤總覽 →</a>
     </div>
     <div class="tag-chips" id="tag-chips"></div>
   </div>
@@ -91,22 +92,12 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="app.js?v=20260719j"></script>
 <script>
-function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
-
-const firebaseConfig = {
-  apiKey: "AIzaSyABbUlUE4GXd-oOS5wGvE44QMTf5jHOoww",
-  authDomain: "kendo-blog.firebaseapp.com",
-  databaseURL: "https://kendo-blog-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "kendo-blog",
-  storageBucket: "kendo-blog.firebasestorage.app",
-  messagingSenderId: "131957671333",
-  appId: "1:131957671333:web:5477aaeafdc9765433544c"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
-const ADMIN_UID = "aRf8E0FGuZYHAJTFtIA94HJPArF2";
+const fb = KENDO.init();
+const auth = fb.auth;
+const db = fb.db;
+const ADMIN_UID = KENDO.ADMIN_UID;
 const notesRef = db.ref('notes');
 
 const loginBtn = document.getElementById('login-btn');
@@ -125,25 +116,10 @@ let editingKey = null;
 let activeTag = null;
 let query = '';
 
-/* ---------- helpers ---------- */
-function formatDate(iso){
-  var p = iso.split('-');
-  return p[0] + '/' + parseInt(p[1],10) + '/' + parseInt(p[2],10);
-}
-function toISODate(display){
-  var p = (display||'').split('/');
-  if (p.length !== 3) return '';
-  return p[0] + '-' + String(p[1]).padStart(2,'0') + '-' + String(p[2]).padStart(2,'0');
-}
-function parseTags(str){
-  return (str||'').split(/[\s,，、#]+/).map(function(t){return t.trim();}).filter(Boolean);
-}
-function monthKey(display){
-  var p = (display||'').split('/');
-  if (p.length < 2) return '其他';
-  return p[0] + ' 年 ' + parseInt(p[1],10) + ' 月';
-}
-function stripHtml(s){ return (s||'').replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,''); }
+/* ---------- helpers（共用邏輯在 app.js） ---------- */
+var formatDate = KENDO.formatDate, toISODate = KENDO.toISODate,
+    parseTags = KENDO.parseTags, monthKey = KENDO.monthKey,
+    stripHtml = KENDO.stripHtml;
 
 /* ---------- form ---------- */
 function resetForm(){

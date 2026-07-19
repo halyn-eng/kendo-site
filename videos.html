@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>影片筆記 — 劍道學習手冊</title>
-<link rel="stylesheet" href="style.css?v=20260719i">
+<link rel="stylesheet" href="style.css?v=20260719j">
 <style>
 .auth-bar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:1rem}
 .auth-bar button{padding:6px 16px;font-size:13px}
@@ -64,7 +64,7 @@
     <input type="url" id="f-url" placeholder="YouTube 連結（https://youtu.be/...）">
     <input type="text" id="f-tags" placeholder="標籤，例：返し胴 踏み込み 中段">
     <div class="field-hint">標籤用空白或逗號分隔，不用打 #</div>
-    <textarea id="f-text" placeholder="用自己的話寫重點筆記，不用逐字翻譯" required></textarea>
+    <textarea id="f-text" placeholder="用自己的話寫重點筆記，不用逐字翻譯&#10;&#10;寫 3:20 這種時間，發布後會自動變成可以點的連結，直接跳到影片那一秒" required></textarea>
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button type="button" id="cancel-btn" class="note-btn" style="display:none">取消編輯</button>
       <button id="submit-btn" class="btn-save" type="submit">發布筆記</button>
@@ -75,6 +75,7 @@
     <div class="filter-row">
       <input type="text" id="search" class="search-input" placeholder="搜尋標題或筆記內容…">
       <span class="filter-count" id="count"></span>
+      <a href="tags.html" class="tag-chip" style="text-decoration:none">標籤總覽 →</a>
     </div>
     <div class="tag-chips" id="tag-chips"></div>
   </div>
@@ -90,22 +91,12 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="app.js?v=20260719j"></script>
 <script>
-function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
-
-const firebaseConfig = {
-  apiKey: "AIzaSyABbUlUE4GXd-oOS5wGvE44QMTf5jHOoww",
-  authDomain: "kendo-blog.firebaseapp.com",
-  databaseURL: "https://kendo-blog-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "kendo-blog",
-  storageBucket: "kendo-blog.firebasestorage.app",
-  messagingSenderId: "131957671333",
-  appId: "1:131957671333:web:5477aaeafdc9765433544c"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
-const ADMIN_UID = "aRf8E0FGuZYHAJTFtIA94HJPArF2";
+const fb = KENDO.init();
+const auth = fb.auth;
+const db = fb.db;
+const ADMIN_UID = KENDO.ADMIN_UID;
 const ref = db.ref('videos');
 
 const loginBtn = document.getElementById('login-btn');
@@ -124,24 +115,9 @@ let editingKey = null;
 let activeTag = null;
 let query = '';
 
-/* ---------- helpers ---------- */
-function ytId(url){
-  if(!url) return null;
-  var m = String(url).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([A-Za-z0-9_-]{11})/);
-  return m ? m[1] : null;
-}
-function formatDate(iso){
-  var p = iso.split('-');
-  return p[0] + '/' + parseInt(p[1],10) + '/' + parseInt(p[2],10);
-}
-function toISODate(display){
-  var p = (display||'').split('/');
-  if (p.length !== 3) return '';
-  return p[0] + '-' + String(p[1]).padStart(2,'0') + '-' + String(p[2]).padStart(2,'0');
-}
-function parseTags(str){
-  return (str||'').split(/[\s,，、#]+/).map(function(t){return t.trim();}).filter(Boolean);
-}
+/* ---------- helpers（共用邏輯在 app.js） ---------- */
+var ytId = KENDO.ytId, formatDate = KENDO.formatDate,
+    toISODate = KENDO.toISODate, parseTags = KENDO.parseTags;
 
 /* ---------- form ---------- */
 function resetForm(){
@@ -248,7 +224,7 @@ function render(){
 
     var note = document.createElement('div');
     note.className = 'video-note clamped';
-    note.textContent = e.text || '';
+    note.appendChild(KENDO.linkifyTimestamps(e.text || '', e.url));
     body.appendChild(note);
 
     var more = document.createElement('button');
