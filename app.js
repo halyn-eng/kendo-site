@@ -17,7 +17,11 @@ var KENDO = (function () {
 
   function init() {
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    return { auth: firebase.auth(), db: firebase.database() };
+    // 有些頁面（純閱讀）沒有載入 auth SDK，這裡要能容忍，否則整頁腳本會停掉
+    return {
+      auth: (typeof firebase.auth === 'function') ? firebase.auth() : null,
+      db: firebase.database()
+    };
   }
 
   function isAdmin(user) {
