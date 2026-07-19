@@ -2,7 +2,7 @@
 
 hero.jpg         首頁大圖（建議橫幅，比例約 21:9，例如 1600x690）
 dogi.jpg         道衣・袴（首頁小圖，比例約 3:2）
-gear-order.jpg   護具穿戴順序（比例約 3:2）
+shinai-grip.jpg  竹刀怎麼拿（首頁小圖，比例約 3:2）
 men-tie.jpg      面怎麼戴（比例約 3:2）
 small-men.jpg    小さい面 解釋圖（比例約 4:3）
 small-do.jpg     小さい胴 解釋圖（比例約 4:3）
