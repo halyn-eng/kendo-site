@@ -55,7 +55,10 @@
   <form id="add-note-form" class="notes-form" style="display:none">
     <input type="date" id="note-date" required>
     <textarea id="note-text-input" placeholder="寫下今天的心得..." required></textarea>
-    <button id="note-submit" class="btn-save" type="submit">發布心得</button>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button type="button" id="cancel-edit-btn" class="btn-del" style="display:none">取消編輯</button>
+      <button id="note-submit" class="btn-save" type="submit">發布心得</button>
+    </div>
   </form>
 
   <div id="notes-list">
@@ -91,12 +94,39 @@ const loginBtn = document.getElementById('login-btn');
 const logoutBtn = document.getElementById('logout-btn');
 const loginForm = document.getElementById('login-form');
 const addForm = document.getElementById('add-note-form');
+const cancelEditBtn = document.getElementById('cancel-edit-btn');
+const noteSubmitBtn = document.getElementById('note-submit');
 const notesList = document.getElementById('notes-list');
+let editingKey = null;
 
 function formatDate(iso){
   const parts = iso.split('-');
   return parts[0] + '/' + parseInt(parts[1],10) + '/' + parseInt(parts[2],10);
 }
+
+function toISODate(display){
+  const parts = (display||'').split('/');
+  if (parts.length !== 3) return '';
+  return parts[0] + '-' + String(parts[1]).padStart(2,'0') + '-' + String(parts[2]).padStart(2,'0');
+}
+
+function resetForm(){
+  addForm.reset();
+  editingKey = null;
+  noteSubmitBtn.textContent = '發布心得';
+  cancelEditBtn.style.display = 'none';
+}
+
+function startEdit(e){
+  editingKey = e.key;
+  document.getElementById('note-date').value = toISODate(e.date);
+  document.getElementById('note-text-input').value = (e.text||'').replace(/<br\s*\/?>/gi, '\n');
+  noteSubmitBtn.textContent = '更新心得';
+  cancelEditBtn.style.display = 'inline-block';
+  addForm.scrollIntoView({behavior:'smooth'});
+}
+
+cancelEditBtn.onclick = () => resetForm();
 
 function renderNotes(snapshot){
   const isAdmin = auth.currentUser && auth.currentUser.uid === ADMIN_UID;
@@ -120,6 +150,12 @@ function renderNotes(snapshot){
     meta.appendChild(dateSpan);
 
     if (isAdmin){
+      const editBtn = document.createElement('button');
+      editBtn.className = 'btn-del';
+      editBtn.textContent = '編輯';
+      editBtn.onclick = () => startEdit(e);
+      meta.appendChild(editBtn);
+
       const delBtn = document.createElement('button');
       delBtn.className = 'btn-del';
       delBtn.textContent = '刪除';
@@ -166,12 +202,21 @@ addForm.addEventListener('submit', (ev) => {
   const dateVal = document.getElementById('note-date').value;
   const textVal = document.getElementById('note-text-input').value.trim();
   if (!dateVal || !textVal) return;
-  notesRef.push({
-    date: formatDate(dateVal),
-    text: textVal.replace(/\n/g, '<br>'),
-    timestamp: Date.now()
-  }).then(() => { addForm.reset(); })
-    .catch(err => alert('發布失敗：' + err.message));
+
+  if (editingKey){
+    notesRef.child(editingKey).update({
+      date: formatDate(dateVal),
+      text: textVal.replace(/\n/g, '<br>')
+    }).then(resetForm)
+      .catch(err => alert('更新失敗：' + err.message));
+  } else {
+    notesRef.push({
+      date: formatDate(dateVal),
+      text: textVal.replace(/\n/g, '<br>'),
+      timestamp: Date.now()
+    }).then(resetForm)
+      .catch(err => alert('發布失敗：' + err.message));
+  }
 });
 </script>
 </body>
