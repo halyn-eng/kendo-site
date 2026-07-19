@@ -168,24 +168,21 @@ body {
 
 /* ── IMAGES ── */
 .lp-hero-media {
-  max-width: 1080px;
+  max-width: 940px;
   margin: 0 auto;
-  padding: 0 2rem 1rem;
+  padding: 0 2rem 2rem;
 }
 .lp-hero-media .media {
-  aspect-ratio: 21 / 9;
-  border-radius: 4px;
-  background-color: var(--gray-bg);
-  background-size: cover;
+  aspect-ratio: 3 / 2;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  border: 1px solid var(--line);
 }
 .lp-grid .c-thumb {
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 4 / 3;
   margin: -1.75rem -1.5rem 1.25rem;
   background-color: var(--gray-bg);
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   border-bottom: 1px solid var(--line);
