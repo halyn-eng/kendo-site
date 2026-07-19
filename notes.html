@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>練習心得 — 劍道學習手冊</title>
 <link rel="stylesheet" href="style.css">
+<style>
+.auth-bar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:1rem}
+.auth-bar button{padding:6px 16px;font-size:13px}
+#login-form{max-width:320px;margin-left:auto;margin-bottom:1.5rem}
+</style>
 </head>
 <body>
 
@@ -36,28 +41,138 @@
 
 <div class="content">
 
-  <!-- 心得從這裡開始，最新的在最上面 -->
-
-  <div class="note-entry">
-    <div class="note-meta"><span>2026/7/19</span></div>
-    <div class="note-text">菜還是要多練——今天的我好菜。<br>
-今天學的是小さい面。腳是弓箭步，後腳不動（依照老師的講法是坐下去的姿勢），然後竹劍不是高高舉到頭頂，而是只抬到眼睛附近，然後打下去。<br><br>
-還有小さい胴，這裡有教練教說左手是握緊的，不是因為打胴所以手放掉。<br>
-打胴要切進去（雖然我還不太理解要怎麼切……）<br><br>
-在和尤教練自由練習的時候有一個重點是說，對方打到我之後，我也要跟在他後面，假設裁判沒有判定上一個攻擊成功，我就補個面得分。<br><br>
-劍道好有趣。</div>
+  <div class="auth-bar">
+    <button id="login-btn" class="btn-save">登入</button>
+    <button id="logout-btn" class="btn-save" style="display:none">登出</button>
   </div>
 
-  <div class="note-entry">
-    <div class="note-meta"><span>2026/7/17</span></div>
-    <div class="note-text">我今天超級睏，雖然運動是身體在動，但是我站著都想要睡覺。<br><br>
-還是沒有搞懂「衝擊」是流暢做法，但是我搞懂了退擊面。可能這樣之後在教練說衝擊30（次）我也不會害怕了（太好了~）<br>
-杜教練教說在和別人衝體的時候要抓緊時機舉劍打「退擊面」，打完然後往後面跑。</div>
+  <form id="login-form" class="notes-form" style="display:none">
+    <input type="email" id="login-email" placeholder="Email" required>
+    <input type="password" id="login-pw" placeholder="密碼" required>
+    <button id="login-submit" class="btn-save" type="submit">送出登入</button>
+  </form>
+
+  <form id="add-note-form" class="notes-form" style="display:none">
+    <input type="date" id="note-date" required>
+    <textarea id="note-text-input" placeholder="寫下今天的心得..." required></textarea>
+    <button id="note-submit" class="btn-save" type="submit">發布心得</button>
+  </form>
+
+  <div id="notes-list">
+    <div style="text-align:center;color:#aaa;padding:3rem;font-size:14px">載入中...</div>
   </div>
 
 </div>
 
 <footer>道館規定：面・小手・胴 only（無突き）</footer>
-<script>function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}</script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
+
+const firebaseConfig = {
+  apiKey: "AIzaSyABbUlUE4GXd-oOS5wGvE44QMTf5jHOoww",
+  authDomain: "kendo-blog.firebaseapp.com",
+  databaseURL: "https://kendo-blog-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "kendo-blog",
+  storageBucket: "kendo-blog.firebasestorage.app",
+  messagingSenderId: "131957671333",
+  appId: "1:131957671333:web:5477aaeafdc9765433544c"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+const ADMIN_UID = "aRf8E0FGuZYHAJTFtIA94HJPArF2";
+const notesRef = db.ref('notes');
+
+const loginBtn = document.getElementById('login-btn');
+const logoutBtn = document.getElementById('logout-btn');
+const loginForm = document.getElementById('login-form');
+const addForm = document.getElementById('add-note-form');
+const notesList = document.getElementById('notes-list');
+
+function formatDate(iso){
+  const parts = iso.split('-');
+  return parts[0] + '/' + parseInt(parts[1],10) + '/' + parseInt(parts[2],10);
+}
+
+function renderNotes(snapshot){
+  const isAdmin = auth.currentUser && auth.currentUser.uid === ADMIN_UID;
+  const entries = [];
+  snapshot.forEach(child => { entries.push({ key: child.key, ...child.val() }); });
+  entries.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+
+  notesList.innerHTML = '';
+  if (entries.length === 0){
+    notesList.innerHTML = '<div style="text-align:center;color:#aaa;padding:3rem;font-size:14px">還沒有心得記錄。</div>';
+    return;
+  }
+  entries.forEach(e => {
+    const entry = document.createElement('div');
+    entry.className = 'note-entry';
+
+    const meta = document.createElement('div');
+    meta.className = 'note-meta';
+    const dateSpan = document.createElement('span');
+    dateSpan.textContent = e.date || '';
+    meta.appendChild(dateSpan);
+
+    if (isAdmin){
+      const delBtn = document.createElement('button');
+      delBtn.className = 'btn-del';
+      delBtn.textContent = '刪除';
+      delBtn.onclick = () => { if (confirm('確定刪除這篇心得？')) notesRef.child(e.key).remove(); };
+      meta.appendChild(delBtn);
+    }
+    entry.appendChild(meta);
+
+    const textDiv = document.createElement('div');
+    textDiv.className = 'note-text';
+    textDiv.innerHTML = e.text || '';
+    entry.appendChild(textDiv);
+
+    notesList.appendChild(entry);
+  });
+}
+
+notesRef.on('value', renderNotes);
+
+loginBtn.onclick = () => { loginForm.style.display = 'flex'; };
+
+loginForm.addEventListener('submit', (ev) => {
+  ev.preventDefault();
+  const email = document.getElementById('login-email').value;
+  const pw = document.getElementById('login-pw').value;
+  auth.signInWithEmailAndPassword(email, pw)
+    .then(() => { loginForm.reset(); })
+    .catch(err => alert('登入失敗：' + err.message));
+});
+
+logoutBtn.onclick = () => auth.signOut();
+
+auth.onAuthStateChanged(user => {
+  const isAdmin = user && user.uid === ADMIN_UID;
+  loginForm.style.display = 'none';
+  loginBtn.style.display = isAdmin ? 'none' : 'inline-block';
+  logoutBtn.style.display = isAdmin ? 'inline-block' : 'none';
+  addForm.style.display = isAdmin ? 'flex' : 'none';
+  notesRef.once('value').then(renderNotes);
+});
+
+addForm.addEventListener('submit', (ev) => {
+  ev.preventDefault();
+  const dateVal = document.getElementById('note-date').value;
+  const textVal = document.getElementById('note-text-input').value.trim();
+  if (!dateVal || !textVal) return;
+  notesRef.push({
+    date: formatDate(dateVal),
+    text: textVal.replace(/\n/g, '<br>'),
+    timestamp: Date.now()
+  }).then(() => { addForm.reset(); })
+    .catch(err => alert('發布失敗：' + err.message));
+});
+</script>
 </body>
 </html>

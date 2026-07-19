@@ -1,0 +1,86 @@
+Firebase 設定步驟（心得留言後端）
+==================================
+
+目標：訪客都能看心得，只有你登入後才能新增。
+做完這些步驟後，把最後拿到的資料回傳給我，我會把程式碼寫進 notes.html。
+
+
+A. 建立 Firebase 專案
+----------------------
+1. 開瀏覽器到 https://console.firebase.google.com
+2. 用你的 Google 帳號登入
+3. 點「新增專案」，取名字（例如 kendo-site）
+4. 是否啟用 Google Analytics 可以關掉（不需要）
+5. 建立完成，進入專案主控台
+
+
+B. 開啟 Realtime Database（存心得資料的地方）
+----------------------------------------------
+6. 左側選單找「Build」→「Realtime Database」
+7. 點「建立資料庫」
+8. 安全性規則選「預設為鎖定模式」，點「啟用」
+9. 建立完成（已完成）
+
+
+C. 開啟 Authentication（登入功能）
+-----------------------------------
+11. 左側選單「Build」→「Authentication」
+12. 點「開始使用」
+13. 到「Sign-in method」分頁，點「電子郵件/密碼」，啟用，儲存
+14. 到「Users」分頁，點「新增使用者」
+15. 輸入你要用來登入網站的 email 和密碼（記下來，之後登入要用）
+16. 新增完後，點進這個使用者，把「User UID」那串英數字複製下來
+    （這步很重要，等一下要貼給我）
+
+
+D. 設定安全規則（只有你能寫入，大家都能讀）
+--------------------------------------------
+17. 回到 Realtime Database，點上面「規則」分頁
+18. 把裡面的內容全部換成：
+
+{
+  "rules": {
+    "notes": {
+      ".read": true,
+      ".write": "auth != null && auth.uid == 'aRf8E0FGuZYHAJTFtIA94HJPArF2'"
+    }
+  }
+}
+
+19. 已經填好你的 UID 了，直接複製上面整段貼進去
+20. 點「發布」
+
+
+E. 拿到網頁要用的金鑰
+----------------------
+21. 左上角齒輪圖示 →「專案設定」
+22. 往下捲，找「你的應用程式」，點 </> 這個網頁圖示
+23. 取個名字（例如 kendo-notes-web），不用勾 Firebase Hosting，點「註冊應用程式」
+24. 畫面會出現一段程式碼，長得像這樣：
+
+const firebaseConfig = {
+  apiKey: "AIzaSy........",
+  authDomain: "kendo-site-xxxx.firebaseapp.com",
+  projectId: "kendo-site-xxxx",
+  storageBucket: "kendo-site-xxxx.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef123456"
+};
+
+25. 整段複製起來
+
+
+F. 授權網域（讓 GitHub Pages 網站能用登入功能）
+-------------------------------------------------
+26. 回到 Authentication →「Settings」分頁 → 找「Authorized domains」
+27. 點「新增網域」，輸入：halyn-eng.github.io
+28. 儲存
+
+
+完成後，把這三樣東西貼給我：
+------------------------------
+1. E-24 的整段 firebaseConfig 程式碼
+2. C-15 設定的登入 email（密碼不用給我，你自己記得就好）
+3. C-16 的 User UID
+
+我拿到之後就會把登入 + 新增心得的功能寫進 notes.html。
