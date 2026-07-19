@@ -1,0 +1,25 @@
+{
+  "rules": {
+    "notes": {
+      ".read": true,
+      ".write": "auth != null && auth.uid == 'aRf8E0FGuZYHAJTFtIA94HJPArF2'"
+    },
+
+    "videos": {
+      ".read": true,
+      ".write": "auth != null && auth.uid == 'aRf8E0FGuZYHAJTFtIA94HJPArF2'"
+    },
+
+    "messages": {
+      ".read": "auth != null && auth.uid == 'aRf8E0FGuZYHAJTFtIA94HJPArF2'",
+      "$msg": {
+        ".write": "(!data.exists() && newData.exists()) || (auth != null && auth.uid == 'aRf8E0FGuZYHAJTFtIA94HJPArF2')",
+        ".validate": "newData.hasChildren(['name','contact','text','timestamp']) && newData.child('name').isString() && newData.child('name').val().length > 0 && newData.child('name').val().length <= 50 && newData.child('contact').isString() && newData.child('contact').val().length > 0 && newData.child('contact').val().length <= 100 && newData.child('text').isString() && newData.child('text').val().length > 0 && newData.child('text').val().length <= 1500 && newData.child('timestamp').isNumber()",
+        "$other": { ".validate": false }
+      }
+    },
+
+    ".read": false,
+    ".write": false
+  }
+}
