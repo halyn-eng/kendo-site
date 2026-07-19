@@ -1,16 +1,82 @@
-<!doctype html>
-<html lang="en" dir="ltr" data-has-hydrated="false">
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="generator" content="Docusaurus v3.10.2">
-<title data-rh="true">劍道學習手冊</title><meta data-rh="true" property="og:title" content="劍道學習手冊"><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://halyn-eng.github.io/kendo-site/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><link data-rh="true" rel="icon" href="/kendo-site/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://halyn-eng.github.io/kendo-site/"><link data-rh="true" rel="alternate" href="https://halyn-eng.github.io/kendo-site/" hreflang="en"><link data-rh="true" rel="alternate" href="https://halyn-eng.github.io/kendo-site/" hreflang="x-default"><script data-rh="true">function insertBanner(){var n=document.createElement("div");n.id="__docusaurus-base-url-issue-banner-container";n.innerHTML='\n<div id="__docusaurus-base-url-issue-banner" style="border: thick solid red; background-color: rgb(255, 230, 179); margin: 20px; padding: 20px; font-size: 20px;">\n   <p style="font-weight: bold; font-size: 30px;">Your Docusaurus site did not load properly.</p>\n   <p>A very common reason is a wrong site <a href="https://docusaurus.io/docs/docusaurus.config.js/#baseUrl" style="font-weight: bold;">baseUrl configuration</a>.</p>\n   <p>Current configured baseUrl = <span style="font-weight: bold; color: red;">/kendo-site/</span> </p>\n   <p>We suggest trying baseUrl = <span id="__docusaurus-base-url-issue-banner-suggestion-container" style="font-weight: bold; color: green;"></span></p>\n</div>\n',document.body.prepend(n);var e=document.getElementById("__docusaurus-base-url-issue-banner-suggestion-container"),s=window.location.pathname,o="/"===s.substr(-1)?s:s+"/";e.textContent=o}document.addEventListener("DOMContentLoaded",function(){void 0===window.docusaurus&&insertBanner()})</script><link rel="stylesheet" href="/kendo-site/assets/css/styles.f5d06045.css">
-<script src="/kendo-site/assets/js/runtime~main.9061d2d1.js" defer="defer"></script>
-<script src="/kendo-site/assets/js/main.0fe5c979.js" defer="defer"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>劍道學習手冊</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<svg style="display: none;"><defs>
-<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
-</defs></svg>
-<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"></div>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand">
+      <span class="brand-icon">⚔️</span>
+      劍道學習手冊
+    </a>
+    <ul class="navbar-links">
+      <li><a href="terms.html">📖 名詞解釋</a></li>
+      <li><a href="reading.html">🎯 読み練習</a></li>
+      <li><a href="errors.html">⚠️ 常見錯誤</a></li>
+      <li><a href="daily.html">📅 每日練習</a></li>
+      <li><a href="notes.html">📝 練習心得</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="選單">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="terms.html">📖 名詞解釋</a>
+    <a href="reading.html">🎯 読み練習</a>
+    <a href="errors.html">⚠️ 常見錯誤</a>
+    <a href="daily.html">📅 每日練習</a>
+    <a href="notes.html">📝 練習心得</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>⚔️ 劍道學習手冊</h1>
+  <p>道館規定：面・小手・胴 only（無突き）<br>從基礎術語到每日練習，一站式學習指南</p>
+
+  <div class="hero-cards">
+    <a href="terms.html" class="hero-card">
+      <div class="card-icon">📖</div>
+      <div class="card-title">名詞解釋</div>
+      <div class="card-desc">姿勢・腳步・技の種類</div>
+    </a>
+    <a href="reading.html" class="hero-card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">読み練習</div>
+      <div class="card-desc">對應策略・間合い表</div>
+    </a>
+    <a href="errors.html" class="hero-card">
+      <div class="card-icon">⚠️</div>
+      <div class="card-title">常見錯誤</div>
+      <div class="card-desc">踏み込み・読み・構え</div>
+    </a>
+    <a href="daily.html" class="hero-card">
+      <div class="card-icon">📅</div>
+      <div class="card-title">每日練習</div>
+      <div class="card-desc">15分鐘結構・週輪替表</div>
+    </a>
+  </div>
+
+  <div class="priority-box">
+    <h3>🎯 初學者優先練這3個</h3>
+    <div class="priority-item"><div class="priority-num">1</div>對方打面 → 返し胴</div>
+    <div class="priority-item"><div class="priority-num">2</div>對方打小手 → 抜き面</div>
+    <div class="priority-item"><div class="priority-num">3</div>鍔迫り合い後 → 引き面</div>
+  </div>
+</section>
+
+<footer>
+  道館規定：面・小手・胴 only（無突き）
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+</script>
 </body>
 </html>

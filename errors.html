@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>常見錯誤 — 劍道學習手冊</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand"><span class="brand-icon">⚔️</span>劍道學習手冊</a>
+    <ul class="navbar-links">
+      <li><a href="terms.html">📖 名詞解釋</a></li>
+      <li><a href="reading.html">🎯 読み練習</a></li>
+      <li><a href="errors.html" class="active">⚠️ 常見錯誤</a></li>
+      <li><a href="daily.html">📅 每日練習</a></li>
+      <li><a href="notes.html">📝 練習心得</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="terms.html">📖 名詞解釋</a>
+    <a href="reading.html">🎯 読み練習</a>
+    <a href="errors.html" class="active">⚠️ 常見錯誤</a>
+    <a href="daily.html">📅 每日練習</a>
+    <a href="notes.html">📝 練習心得</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>⚠️ 常見錯誤</h1>
+  <p>找出問題所在，對症下藥</p>
+</div>
+
+<div class="content">
+
+  <div class="card">
+    <div class="term-name">踏み込み：跳起來踩</div>
+    <div class="term-body" style="margin-bottom:10px;color:#888780">力量往上跑，不是往前</div>
+    <div class="compare">
+      <div class="box bad"><div class="box-label">❌ 錯誤</div>右腳主動跳起來 → 力量向上 → 弧形軌跡</div>
+      <div class="box good"><div class="box-label">✅ 正確</div>左腳蹬地推出去 → 右腳水平滑出 → 幾乎貼地</div>
+    </div>
+    <div class="term-body" style="margin-top:10px">意識放在「<b>左腳蹬地</b>」，不是「右腳跳起」</div>
+  </div>
+
+  <div class="card">
+    <div class="term-name">踏み込み：變成兩段</div>
+    <div class="term-body" style="margin-bottom:10px;color:#888780">手腳沒有同步</div>
+    <div class="compare">
+      <div class="box bad"><div class="box-label">❌ 錯誤</div>竹刀到 → 停一下 → 腳踩（兩個動作）</div>
+      <div class="box good"><div class="box-label">✅ 正確</div>竹刀到 = 腳踩（同一瞬間）</div>
+    </div>
+    <div class="term-body" style="margin-top:10px">先放慢速度練同步。喊聲幫助同步——聲音、劍、腳三個一起出。</div>
+  </div>
+
+  <div class="card">
+    <div class="term-name">引き面：退的同時打</div>
+    <div class="term-body" style="margin-bottom:10px;color:#888780">步驟順序搞錯</div>
+    <div class="compare">
+      <div class="box bad"><div class="box-label">❌ 錯誤</div>退後的同時揮竹刀 → 力道不足</div>
+      <div class="box good"><div class="box-label">✅ 正確</div>踏み込み（踩）→ 打到 → 才後退2～3步</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="term-name">読み：停在那邊不知道怎麼反應</div>
+    <div class="term-body" style="margin-bottom:10px;color:#888780">看動作而不是看起こり</div>
+    <div class="compare">
+      <div class="box bad"><div class="box-label">❌ 錯誤</div>等竹刀打下來才反應 → 來不及</div>
+      <div class="box good"><div class="box-label">✅ 正確</div>看肩膀/腰/剣先的起こり → 提前反應</div>
+    </div>
+    <div class="term-body" style="margin-top:10px">初學重點不是「想對的技」，而是「<b>對方一動你就動</b>」，先讓身體有反應習慣。</div>
+  </div>
+
+  <div class="card">
+    <div class="term-name">抜き面：躲過頭 / 閃太慢</div>
+    <div class="term-body" style="margin-bottom:10px;color:#888780">距離抓不準，變成逃跑或來不及反擊</div>
+    <div class="compare">
+      <div class="box bad"><div class="box-label">❌ 躲太多</div>退整步或大幅側移 → 拉開一足一刀距離 → 打不到面</div>
+      <div class="box bad"><div class="box-label">❌ 看竹刀才反應</div>等對方竹刀快到才閃 → 來不及踏み込み反擊</div>
+    </div>
+    <div class="box good" style="margin-top:10px;border-radius:10px;padding:10px 12px;font-size:13px">
+      <div class="box-label">✅ 正確</div>看起こり提前微幅閃避，閃跟打同一拍完成，維持一足一刀距離
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="term-name">構えが高い / 低い</div>
+    <div class="term-body" style="margin-bottom:10px;color:#888780">剣先位置不正確造成防守漏洞</div>
+    <div class="compare">
+      <div class="box bad"><div class="box-label">❌ 高い（對準額頭以上）</div>小手和胴完全露出</div>
+      <div class="box bad"><div class="box-label">❌ 低い（對準胸口以下）</div>面位置露出</div>
+    </div>
+    <div class="box good" style="margin-top:10px;border-radius:10px;padding:10px 12px;font-size:13px">
+      <div class="box-label">✅ 正確</div>剣先對準對方喉嚨到左眼之間
+    </div>
+  </div>
+
+</div>
+
+<footer>道館規定：面・小手・胴 only（無突き）</footer>
+<script>function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}</script>
+</body>
+</html>

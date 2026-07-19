@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkkendo_site=globalThis.webpackChunkkendo_site||[]).push([[634],{192(e,s,t){t.r(s),t.d(s,{default:()=>i});var n=t(6347),o=t(4848);function i(){return(0,o.jsx)(n.rd,{to:"/kendo-site/docs/intro"})}}}]);

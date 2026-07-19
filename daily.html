@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>每日練習 — 劍道學習手冊</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand"><span class="brand-icon">⚔️</span>劍道學習手冊</a>
+    <ul class="navbar-links">
+      <li><a href="terms.html">📖 名詞解釋</a></li>
+      <li><a href="reading.html">🎯 読み練習</a></li>
+      <li><a href="errors.html">⚠️ 常見錯誤</a></li>
+      <li><a href="daily.html" class="active">📅 每日練習</a></li>
+      <li><a href="notes.html">📝 練習心得</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="terms.html">📖 名詞解釋</a>
+    <a href="reading.html">🎯 読み練習</a>
+    <a href="errors.html">⚠️ 常見錯誤</a>
+    <a href="daily.html" class="active">📅 每日練習</a>
+    <a href="notes.html">📝 練習心得</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>📅 每日練習</h1>
+  <p>15分鐘自主練習結構・素振り週輪替・動作自我檢查</p>
+</div>
+
+<div class="content">
+
+  <div class="card">
+    <div class="sec-label" style="margin-top:0;margin-bottom:12px">每日15分鐘結構</div>
+    <div class="time-grid" style="display:grid;grid-template-columns:60px 1fr 1fr;gap:6px">
+      <div class="col-h">時間</div><div class="col-h">內容</div><div class="col-h">重點</div>
+      <div class="cell n" style="font-weight:600">2 min</div><div class="cell n">準備活動</div><div class="cell n">手腕、肩膀、腳踝旋轉</div>
+      <div class="cell n" style="font-weight:600">3 min</div><div class="cell n">足さばき</div><div class="cell n">前後左右，意識左腳蹬地</div>
+      <div class="cell n" style="font-weight:600">4 min</div><div class="cell n">素振り</div><div class="cell n">見週輪替表</div>
+      <div class="cell n" style="font-weight:600">3 min</div><div class="cell n">踏み込み練習</div><div class="cell n">慢速確認氣・劍・体同步</div>
+      <div class="cell n" style="font-weight:600">2 min</div><div class="cell n">緩和・呼吸</div><div class="cell n">放鬆肩膀收操</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-label" style="margin-top:0;margin-bottom:12px">素振り 週輪替</div>
+    <div class="week-grid" style="display:grid;grid-template-columns:40px 1fr;gap:6px">
+      <div class="col-h">天</div><div class="col-h">重點</div>
+      <div class="cell g" style="text-align:center;font-weight:600">一</div><div class="cell n">正面素振り × 50</div>
+      <div class="cell g" style="text-align:center;font-weight:600">二</div><div class="cell n">斜め素振り × 30（左右各15）</div>
+      <div class="cell g" style="text-align:center;font-weight:600">三</div><div class="cell n">仕掛け素振り × 30</div>
+      <div class="cell g" style="text-align:center;font-weight:600">四</div><div class="cell n">正面 × 30 ＋ 快慢交替</div>
+      <div class="cell g" style="text-align:center;font-weight:600">五</div><div class="cell n">斜め × 20 ＋ 正面 × 20</div>
+      <div class="cell g" style="text-align:center;font-weight:600">六</div><div class="cell n">自由選，練自己覺得弱的</div>
+      <div class="cell n" style="text-align:center">日</div><div class="cell n">休息 or 只做足さばき</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-label" style="margin-top:0;margin-bottom:12px">踏み込み 專項（3分鐘）</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:2.2">
+      <b style="color:var(--text)">第1分鐘（慢速）</b><br>
+      左腳蹬 → 右腳水平滑出 → 落地，確認不抬高、不跳<br><br>
+      <b style="color:var(--text)">第2分鐘（加上竹刀）</b><br>
+      喊聲 + 竹刀 + 腳 三個同時到<br><br>
+      <b style="color:var(--text)">第3分鐘（連續）</b><br>
+      面 × 10、小手 × 10、胴 × 10，每次確認同步
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-label" style="margin-top:0;margin-bottom:12px">每週動作自我檢查</div>
+    <div style="display:grid;grid-template-columns:60px 1fr;gap:6px">
+      <div class="col-h">週次</div><div class="col-h">這週只看這個</div>
+      <div class="cell a" style="text-align:center;font-weight:600">第1週</div><div class="cell n">踏み込み有沒有跳起來</div>
+      <div class="cell a" style="text-align:center;font-weight:600">第2週</div><div class="cell n">氣劍体有沒有同步</div>
+      <div class="cell a" style="text-align:center;font-weight:600">第3週</div><div class="cell n">左手握法</div>
+      <div class="cell a" style="text-align:center;font-weight:600">第4週</div><div class="cell n">素振りの軌跡直不直</div>
+    </div>
+    <div style="font-size:12px;color:#888780;margin-top:10px">💡 手機錄起來，對照上課動作比較。</div>
+  </div>
+
+</div>
+
+<footer>道館規定：面・小手・胴 only（無突き）</footer>
+<script>function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}</script>
+</body>
+</html>
