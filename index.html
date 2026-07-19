@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>劍道學習手冊</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20260719b">
 </head>
 <body>
 
@@ -48,7 +48,7 @@
 </header>
 
 <div class="lp-hero-media">
-  <div class="media" style="background-image:url('images/hero.jpg')"></div>
+  <div class="media" data-img="images/hero.jpg"></div>
 </div>
 
 <div class="lp-rule"><hr></div>
@@ -123,19 +123,19 @@
 
   <div class="lp-grid">
     <a href="terms.html#dogi">
-      <div class="c-thumb" style="background-image:url('images/dogi.jpg')"></div>
+      <div class="c-thumb" data-img="images/dogi.jpg"></div>
       <span class="c-num">01</span>
       <div class="c-name">道衣・袴</div>
       <div class="c-desc">上衣左壓右，袴繩前後交叉的綁法</div>
     </a>
     <a href="terms.html#gear-order">
-      <div class="c-thumb" style="background-image:url('images/gear-order.jpg')"></div>
+      <div class="c-thumb" data-img="images/gear-order.jpg"></div>
       <span class="c-num">02</span>
       <div class="c-name">護具穿戴順序</div>
       <div class="c-desc">垂れ → 胴 → 面 → 小手，順序不能亂</div>
     </a>
     <a href="terms.html#men-tie">
-      <div class="c-thumb" style="background-image:url('images/men-tie.jpg')"></div>
+      <div class="c-thumb" data-img="images/men-tie.jpg"></div>
       <span class="c-num">03</span>
       <div class="c-name">面怎麼戴</div>
       <div class="c-desc">手ぬぐい包頭，面紐的綁法與鬆緊拿捏</div>
@@ -237,6 +237,21 @@
 function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
 }
+</script>
+<script>
+document.querySelectorAll('[data-img]').forEach(function(el){
+  var src = el.getAttribute('data-img');
+  var probe = new Image();
+  probe.onload = function(){ el.style.backgroundImage = "url('" + src + "')"; el.classList.add('has-img'); };
+  probe.onerror = function(){
+    var cap = el.nextElementSibling;
+    if (cap && cap.classList.contains('fig-cap')) cap.remove();
+    var wrap = el.parentElement;
+    if (wrap && wrap.classList.contains('lp-hero-media')) { wrap.remove(); return; }
+    el.remove();
+  };
+  probe.src = src;
+});
 </script>
 </body>
 </html>
