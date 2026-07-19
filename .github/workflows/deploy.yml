@@ -19,7 +19,7 @@ jobs:
       - name: Prepare static site
         run: |
           mkdir -p public
-          cp index.html terms.html reading.html errors.html daily.html notes.html videos.html tags.html style.css app.js public/
+          cp index.html terms.html reading.html errors.html daily.html notes.html videos.html video.html tags.html style.css app.js public/
           if [ -d images ]; then cp -r images public/; fi
 
       - name: Deploy to GitHub Pages

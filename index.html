@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>劍道學習手冊</title>
-<link rel="stylesheet" href="style.css?v=20260719j">
+<link rel="stylesheet" href="style.css?v=20260719k">
 </head>
 <body>
 
@@ -273,7 +273,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="app.js?v=20260719j"></script>
+<script src="app.js?v=20260719k"></script>
 <script>
 /* ===== 最新動態：自動抓 Firebase，不用每次手動改首頁 ===== */
 var fb = KENDO.init();
@@ -334,7 +334,7 @@ db.ref('videos').limitToLast(3).on('value', function(snap){
   var arr = [];
   snap.forEach(function(c){
     var v = c.val() || {};
-    arr.push({ date: v.date || '', title: v.title || '', url: v.url || '',
+    arr.push({ key: c.key, date: v.date || '', title: v.title || '', url: v.url || '',
                text: KENDO.stripHtml(v.text), tags: KENDO.normTags(v.tags), ts: v.timestamp || 0 });
   });
   arr.sort(function(a,b){ return b.ts - a.ts; });
@@ -346,11 +346,13 @@ db.ref('videos').limitToLast(3).on('value', function(snap){
   var card = document.createElement('div');
   card.className = 'video-card';
 
+  var detailUrl = 'video.html?id=' + encodeURIComponent(e.key);
+
   var thumb = KENDO.ytThumb(e.url);
   if (thumb){
     var a = document.createElement('a');
     a.className = 'video-thumb';
-    a.href = e.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    a.href = detailUrl;
     a.style.backgroundImage = "url('" + thumb + "')";
     card.appendChild(a);
   }
@@ -363,8 +365,8 @@ db.ref('videos').limitToLast(3).on('value', function(snap){
   d.textContent = '最新影片筆記 · ' + e.date;
   body.appendChild(d);
 
-  var title = e.url ? document.createElement('a') : document.createElement('div');
-  if (e.url){ title.href = e.url; title.target = '_blank'; title.rel = 'noopener noreferrer'; }
+  var title = document.createElement('a');
+  title.href = detailUrl;
   title.className = 'video-title';
   title.textContent = e.title || '(無標題)';
   body.appendChild(title);
@@ -376,9 +378,9 @@ db.ref('videos').limitToLast(3).on('value', function(snap){
 
   var more = document.createElement('a');
   more.className = 'video-more';
-  more.href = 'videos.html';
+  more.href = detailUrl;
   more.style.textDecoration = 'none';
-  more.textContent = '看全部影片筆記 →';
+  more.textContent = '看筆記全文 →';
   body.appendChild(more);
 
   card.appendChild(body);

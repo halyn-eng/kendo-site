@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>影片筆記 — 劍道學習手冊</title>
+<link rel="stylesheet" href="style.css?v=20260719k">
+<style>
+.back-link{display:inline-block;font-size:12.5px;color:var(--ink-faint);text-decoration:none;margin-bottom:1.6rem}
+.back-link:hover{color:var(--accent)}
+.note-btn{font-size:11.5px;padding:3px 11px;border-radius:2px;border:1px solid var(--line);background:var(--paper-2);color:var(--ink-soft);font-family:inherit;cursor:pointer}
+.note-btn:hover{background:var(--line-soft);color:var(--ink)}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand"><span class="brand-icon">⚔</span>劍道學習手冊</a>
+    <ul class="navbar-links">
+      <li><a href="terms.html">基礎知識</a></li>
+      <li><a href="reading.html">読み練習</a></li>
+      <li><a href="errors.html">常見錯誤</a></li>
+      <li><a href="daily.html">每日練習</a></li>
+      <li><a href="notes.html">練習心得</a></li>
+      <li><a href="videos.html" class="active">影片筆記</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="terms.html">基礎知識</a>
+    <a href="reading.html">読み練習</a>
+    <a href="errors.html">常見錯誤</a>
+    <a href="daily.html">每日練習</a>
+    <a href="notes.html">練習心得</a>
+    <a href="videos.html" class="active">影片筆記</a>
+  </div>
+</nav>
+
+<div class="content" style="max-width:760px;padding-top:2.5rem">
+  <a href="videos.html" class="back-link">← 回影片筆記</a>
+  <div id="detail">
+    <div class="empty-state">載入中…</div>
+  </div>
+</div>
+
+<footer>道館規定：面・小手・胴 only（無突き）</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="app.js?v=20260719k"></script>
+<script>
+var fb = KENDO.init();
+var db = fb.db;
+var detailEl = document.getElementById('detail');
+
+var key = new URLSearchParams(location.search).get('id');
+var player = null;
+var playerReady = false;
+
+if (!key){
+  detailEl.innerHTML = '<div class="empty-state">找不到這篇筆記。<br><a href="videos.html">回影片筆記 →</a></div>';
+} else {
+  db.ref('videos/' + key).once('value').then(function(snap){
+    var v = snap.val();
+    if (!v){
+      detailEl.innerHTML = '<div class="empty-state">找不到這篇筆記，可能已被刪除。<br><a href="videos.html">回影片筆記 →</a></div>';
+      return;
+    }
+    renderDetail({
+      date: v.date || '',
+      title: v.title || '',
+      url: v.url || '',
+      text: v.text || '',
+      tags: KENDO.normTags(v.tags)
+    });
+  }).catch(function(err){
+    detailEl.innerHTML = '<div class="empty-state">載入失敗：' + err.message + '</div>';
+  });
+}
+
+/* 時間戳記點下去 → 控制頁面上的播放器，不跳走 */
+function seekTo(seconds){
+  if (player && playerReady){
+    player.seekTo(seconds, true);
+    player.playVideo();
+    document.querySelector('.video-embed').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+}
+
+function linkifyLocal(text, hasPlayer){
+  var frag = document.createDocumentFragment();
+  var src = String(text || '').replace(/<br\s*\/?>/gi, '\n');
+  var re = /(?:^|[^\d:])(\d{1,2}:\d{2}(?::\d{2})?)(?![\d:])/g;
+  var last = 0, m;
+  while ((m = re.exec(src)) !== null){
+    var ts = m[1];
+    var start = m.index + m[0].length - ts.length;
+    if (start > last) frag.appendChild(document.createTextNode(src.slice(last, start)));
+
+    if (hasPlayer){
+      var b = document.createElement('button');
+      b.className = 'ts-link';
+      b.style.cssText = 'background:none;padding:0 0 1px;cursor:pointer';
+      b.textContent = ts;
+      b.title = '跳到 ' + ts;
+      (function(sec){ b.onclick = function(){ seekTo(sec); }; })(KENDO.tsToSeconds(ts));
+      frag.appendChild(b);
+    } else {
+      frag.appendChild(document.createTextNode(ts));
+    }
+    last = start + ts.length;
+  }
+  if (last < src.length) frag.appendChild(document.createTextNode(src.slice(last)));
+  return frag;
+}
+
+function renderDetail(e){
+  var id = KENDO.ytId(e.url);
+  document.title = (e.title || '影片筆記') + ' — 劍道學習手冊';
+  detailEl.innerHTML = '';
+
+  if (id){
+    var box = document.createElement('div');
+    box.className = 'video-embed';
+    var iframe = document.createElement('iframe');
+    iframe.id = 'yt-player';
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + id + '?enablejsapi=1&rel=0';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    iframe.title = e.title || '影片';
+    box.appendChild(iframe);
+    detailEl.appendChild(box);
+    loadYT(id);
+  }
+
+  var d = document.createElement('div');
+  d.className = 'detail-date';
+  d.textContent = e.date;
+  detailEl.appendChild(d);
+
+  var h = document.createElement('h1');
+  h.className = 'detail-title';
+  h.textContent = e.title || '(無標題)';
+  detailEl.appendChild(h);
+
+  if (e.tags.length){
+    var tw = document.createElement('div');
+    tw.className = 'entry-tags';
+    e.tags.forEach(function(t){
+      var a = document.createElement('a');
+      a.className = 'entry-tag';
+      a.href = KENDO.tagUrl(t);
+      a.style.textDecoration = 'none';
+      a.textContent = '#' + t;
+      tw.appendChild(a);
+    });
+    detailEl.appendChild(tw);
+  }
+
+  var body = document.createElement('div');
+  body.className = 'detail-body';
+  body.appendChild(linkifyLocal(e.text, !!id));
+  detailEl.appendChild(body);
+
+  if (id){
+    var hint = document.createElement('div');
+    hint.className = 'ts-hint';
+    hint.textContent = '點筆記裡的時間，上面的影片會直接跳到那一段。';
+    detailEl.appendChild(hint);
+  }
+
+  var foot = document.createElement('div');
+  foot.className = 'detail-foot';
+
+  var back = document.createElement('a');
+  back.href = 'videos.html';
+  back.textContent = '← 回影片筆記';
+  foot.appendChild(back);
+
+  if (e.url){
+    var ext = document.createElement('a');
+    ext.href = e.url;
+    ext.target = '_blank';
+    ext.rel = 'noopener noreferrer';
+    ext.textContent = '在 YouTube 開啟 ↗';
+    foot.appendChild(ext);
+  }
+  detailEl.appendChild(foot);
+}
+
+/* YouTube IFrame API */
+function loadYT(){
+  if (window.YT && window.YT.Player){ initPlayer(); return; }
+  if (document.getElementById('yt-api')) return;
+  var s = document.createElement('script');
+  s.id = 'yt-api';
+  s.src = 'https://www.youtube.com/iframe_api';
+  document.body.appendChild(s);
+}
+function initPlayer(){
+  player = new YT.Player('yt-player', {
+    events: { onReady: function(){ playerReady = true; } }
+  });
+}
+window.onYouTubeIframeAPIReady = function(){ initPlayer(); };
+</script>
+</body>
+</html>
