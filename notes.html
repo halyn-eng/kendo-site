@@ -9,6 +9,11 @@
 .auth-bar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:1rem}
 .auth-bar button{padding:6px 16px;font-size:13px}
 #login-form{max-width:320px;margin-left:auto;margin-bottom:1.5rem}
+.note-actions{display:flex;gap:6px}
+.note-btn{font-size:12px;padding:3px 10px;border-radius:6px;border:1px solid #e0dfd7;background:#fff;color:#5f5e5a;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.note-btn:hover{background:#f5f4f0}
+.note-btn.edit:hover{color:#185fa5;border-color:#185fa5}
+.note-btn.delete:hover{color:#c0392b;border-color:#c0392b}
 </style>
 </head>
 <body>
@@ -56,7 +61,7 @@
     <input type="date" id="note-date" required>
     <textarea id="note-text-input" placeholder="寫下今天的心得..." required></textarea>
     <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button type="button" id="cancel-edit-btn" class="btn-del" style="display:none">取消編輯</button>
+      <button type="button" id="cancel-edit-btn" class="note-btn" style="display:none">取消編輯</button>
       <button id="note-submit" class="btn-save" type="submit">發布心得</button>
     </div>
   </form>
@@ -150,17 +155,22 @@ function renderNotes(snapshot){
     meta.appendChild(dateSpan);
 
     if (isAdmin){
+      const actions = document.createElement('div');
+      actions.className = 'note-actions';
+
       const editBtn = document.createElement('button');
-      editBtn.className = 'btn-del';
+      editBtn.className = 'note-btn edit';
       editBtn.textContent = '編輯';
       editBtn.onclick = () => startEdit(e);
-      meta.appendChild(editBtn);
+      actions.appendChild(editBtn);
 
       const delBtn = document.createElement('button');
-      delBtn.className = 'btn-del';
+      delBtn.className = 'note-btn delete';
       delBtn.textContent = '刪除';
       delBtn.onclick = () => { if (confirm('確定刪除這篇心得？')) notesRef.child(e.key).remove(); };
-      meta.appendChild(delBtn);
+      actions.appendChild(delBtn);
+
+      meta.appendChild(actions);
     }
     entry.appendChild(meta);
 
