@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>標籤總覽 — 劍道學習手冊</title>
-<link rel="stylesheet" href="style.css?v=20260719j">
+<link rel="stylesheet" href="style.css?v=20260719k">
 </head>
 <body>
 
@@ -57,7 +57,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="app.js?v=20260719j"></script>
+<script src="app.js?v=20260719k"></script>
 <script>
 var fb = KENDO.init();
 var db = fb.db;
@@ -157,12 +157,12 @@ function render() {
     var row = document.createElement('div');
     row.className = 'mix-item' + (thumb ? '' : ' no-thumb');
 
+    var detailUrl = 'video.html?id=' + encodeURIComponent(e.key);
+
     if (thumb) {
       var ta = document.createElement('a');
       ta.className = 'mix-thumb';
-      ta.href = e.url;
-      ta.target = '_blank';
-      ta.rel = 'noopener noreferrer';
+      ta.href = detailUrl;
       ta.style.backgroundImage = "url('" + thumb + "')";
       row.appendChild(ta);
     }
@@ -182,8 +182,8 @@ function render() {
 
     var title;
     if (e.kind === 'video') {
-      title = e.url ? document.createElement('a') : document.createElement('div');
-      if (e.url) { title.href = e.url; title.target = '_blank'; title.rel = 'noopener noreferrer'; }
+      title = document.createElement('a');
+      title.href = detailUrl;
       title.textContent = e.title || '(無標題)';
     } else {
       title = document.createElement('a');

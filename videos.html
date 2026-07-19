@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>影片筆記 — 劍道學習手冊</title>
-<link rel="stylesheet" href="style.css?v=20260719j">
+<link rel="stylesheet" href="style.css?v=20260719k">
 <style>
 .auth-bar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:1rem}
 .auth-bar button{padding:6px 16px;font-size:13px}
@@ -91,7 +91,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="app.js?v=20260719j"></script>
+<script src="app.js?v=20260719k"></script>
 <script>
 const fb = KENDO.init();
 const auth = fb.auth;
@@ -190,13 +190,13 @@ function render(){
     var card = document.createElement('div');
     card.className = 'video-card';
 
+    var detailUrl = 'video.html?id=' + encodeURIComponent(e.key);
+
     var id = ytId(e.url);
     if (id){
       var a = document.createElement('a');
       a.className = 'video-thumb';
-      a.href = e.url;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
+      a.href = detailUrl;
       a.style.backgroundImage = "url('https://i.ytimg.com/vi/" + id + "/hqdefault.jpg')";
       card.appendChild(a);
     }
@@ -209,35 +209,23 @@ function render(){
     d.textContent = e.date || '';
     body.appendChild(d);
 
-    var title;
-    if (e.url){
-      title = document.createElement('a');
-      title.href = e.url;
-      title.target = '_blank';
-      title.rel = 'noopener noreferrer';
-    } else {
-      title = document.createElement('div');
-    }
+    var title = document.createElement('a');
+    title.href = detailUrl;
     title.className = 'video-title';
     title.textContent = e.title || '(無標題)';
     body.appendChild(title);
 
     var note = document.createElement('div');
     note.className = 'video-note clamped';
-    note.appendChild(KENDO.linkifyTimestamps(e.text || '', e.url));
+    note.textContent = e.text || '';
     body.appendChild(note);
 
-    var more = document.createElement('button');
+    var more = document.createElement('a');
     more.className = 'video-more';
-    more.textContent = '展開全文 ↓';
-    more.onclick = function(){
-      var stillClamped = note.classList.toggle('clamped');
-      more.textContent = stillClamped ? '展開全文 ↓' : '收合 ↑';
-    };
+    more.href = detailUrl;
+    more.style.textDecoration = 'none';
+    more.textContent = '看筆記全文 →';
     body.appendChild(more);
-    requestAnimationFrame(function(){
-      if (note.scrollHeight <= note.clientHeight + 2) more.style.display = 'none';
-    });
 
     if ((e.tags||[]).length){
       var tw = document.createElement('div');
