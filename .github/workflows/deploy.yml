@@ -15,23 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build website
-        run: npm run build
+      - name: Prepare static site
+        run: |
+          mkdir -p public
+          cp index.html terms.html reading.html errors.html daily.html notes.html style.css public/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./public
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
