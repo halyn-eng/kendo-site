@@ -119,7 +119,30 @@ body {
 .mobile-menu a:hover, .mobile-menu a.active { background: var(--line-soft); border-left-color: var(--accent); color: var(--ink); }
 
 /* ── LANDING: HERO ── */
-.lp-hero { max-width: 1080px; margin: 0 auto; padding: 6rem 2rem 5rem; }
+.lp-hero {
+  position: relative;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 5rem 2rem 4.5rem;
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.lp-hero::after {
+  content: '';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48%;
+  aspect-ratio: 3 / 2;
+  background: url('images/hero.jpg') center/contain no-repeat;
+  z-index: 0;
+  pointer-events: none;
+}
+.lp-hero > * { position: relative; z-index: 1; }
+.lp-hero h1, .lp-hero .lead, .lp-hero .lp-kicker { max-width: 52%; }
 .lp-kicker {
   font-size: 11px;
   letter-spacing: 0.22em;
@@ -479,7 +502,15 @@ footer {
   .hamburger { display: flex; }
   .navbar-inner { padding: 0 1.25rem; height: 60px; }
 
-  .lp-hero { padding: 3.5rem 1.25rem 3rem; }
+  .lp-hero { padding: 3rem 1.25rem 2rem; min-height: auto; }
+  .lp-hero::after {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin-top: 2.5rem;
+    display: block;
+  }
+  .lp-hero h1, .lp-hero .lead, .lp-hero .lp-kicker { max-width: none; }
   .lp-section { padding: 3.5rem 1.25rem; }
   .lp-rule { padding: 0 1.25rem; }
   .lp-statement { padding: 3rem 1.25rem; }
